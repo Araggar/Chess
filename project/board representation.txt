@@ -1,0 +1,20 @@
+Board Representation
+
+1Bitmap = 64bits
+
+
+12 Bitmaps - Piece "suit" placement (P)
+	6white/6black 
+
+2 Bitmaps - full placement (W/B)
+	1white/1black
+	
+2 Bitmap - Full atack positions (AW/AB)
+	1white/1black
+	
+1 Bitmap - Blank atack bitmap (A)
+	to be used to check pieces valid moves
+		(Except. pawns)
+	
+Full Board = W OR B
+Check = AW/AB AND Pking
