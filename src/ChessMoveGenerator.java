@@ -4,7 +4,6 @@ import java.util.BitSet;
  * Created by Tyrael on 4/29/2017.
  */
 public class ChessMoveGenerator implements MoveGenerator {
-    int[] fuckingCol = new int[]{7, 15, 23, 31, 39, 47, 55, 63};
 
     public void moveTo(int Index) {
 
@@ -93,12 +92,81 @@ public class ChessMoveGenerator implements MoveGenerator {
         return movement;
     }
 
-    public BitSet kingMovement(BitSet knight, BitSet allyBoard, BitSet enemyBoard){
-        return knight;
+    public BitSet kingMovement(BitSet king, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = king.nextSetBit(0);
+
+        if(index+1 < (index/8)*8 + 8 && !allyBoard.get(index+1)){
+            movement.set(index+1);
+        }
+
+        if(index+8 < 64 && !allyBoard.get(index+8)){
+            movement.set(index+8);
+        }
+
+        if(index+9 < 64 && index%8<(index+9)%8 && !allyBoard.get(index+9)){
+            movement.set(index+9);
+        }
+
+        if(index+7 < 64 && index%8>(index+7)%8 && !allyBoard.get(index+7)){
+            movement.set(index+7);
+        }
+
+        if(index-1 > (index/8)*8 -1 && !allyBoard.get(index-1)){
+            movement.set(index-1);
+        }
+
+        if(index-8 > -1 && !allyBoard.get(index-8)){
+            movement.set(index-8);
+        }
+
+        if(index-9 > -1 && index%8>(index-9)%8 && !allyBoard.get(index-9)){
+            movement.set(index-9);
+        }
+
+        if(index-7 > -1 && index%8<(index-7)%8 && !allyBoard.get(index-7)){
+            movement.set(index-7);
+        }
+
+        return movement;
     }
 
-    public  BitSet pawnMovement(BitSet knight, BitSet allyBoard, BitSet enemyBoard){
-        return knight;
+    public BitSet blackPawnMovement(BitSet pawn, BitSet allyBoard, BitSet enemyBoard){
+    BitSet movement = new BitSet(64);
+    int index = pawn.nextSetBit(0);
+    if(index >- 1) {
+        if(index+8 < 64 && !allyBoard.get(index+8) && !enemyBoard.get(index+8)){
+            movement.set(index+8);
+        }
+
+        if(index+9 < 64 && index%8<(index+9)%8 && enemyBoard.get(index+9)){
+            movement.set(index+9);
+        }
+
+        if(index+7 < 64 && index%8>(index+7)%8 && enemyBoard.get(index+7)){
+            movement.set(index+7);
+        }
+    }
+    return movement;
+    }
+
+    public BitSet whitePawnMovement(BitSet pawn, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = pawn.nextSetBit(0);
+        if(index >- 1) {
+            if(index-8 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8)){
+                movement.set(index-8);
+            }
+
+            if(index-9 > -1 && index%8>(index-9)%8 && enemyBoard.get(index-9)){
+                movement.set(index-9);
+            }
+
+            if(index-7 > -1 && index%8<(index-7)%8 && enemyBoard.get(index-7)){
+                movement.set(index-7);
+            }
+        }
+        return movement;
     }
 
     private void diagonal(int index, BitSet movement, BitSet allyBoard, BitSet enemyBoard){
