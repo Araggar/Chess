@@ -5,31 +5,40 @@ import java.util.BitSet;
  */
 public class TestCases {
 
+    public static void caseBitBoard(){
+        BitBoard test = new BitBoard(64, 5);
+        System.out.println(test.boardValue());
+        test.set(0, 7);
+        System.out.println(test.boardValue());
+        System.out.println(test);
+
+    }
+
     public static void caseGenerator() {
-        BitSet blackPawns, blackRooks, blackKnights, blackBishops, blackQueen, blackKing;
-        BitSet whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueen, whiteKing;
-        BitSet fullBlack = new BitSet(64);
-        BitSet fullWhite = new BitSet(64);
-        BitSet fullBoard = new BitSet(64);
-        ChessMoveGenerator move = new ChessMoveGenerator();
+        BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueen, blackKing;
+        BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueen, whiteKing;
+        BitBoard fullBlack = new BitBoard(64, 0);
+        BitBoard fullWhite = new BitBoard(64, 0);
+        BitBoard fullBoard = new BitBoard(64, 0);
         BoardInitializer ini = new BoardInitializer();
 
         int counter = 0;
 
+        //Values in Centipawns
         //Black "Suit" locations
-        blackPawns = ini.generateBitset("p");
-        blackRooks = ini.generateBitset("r");
-        blackKnights = ini.generateBitset("n");
-        blackBishops = ini.generateBitset("b");
-        blackQueen = ini.generateBitset("q");
-        blackKing = ini.generateBitset("k");
+        blackPawns = ini.generateBitset("p", 100);
+        blackRooks = ini.generateBitset("r", 500);
+        blackKnights = ini.generateBitset("n", 300);
+        blackBishops = ini.generateBitset("b", 300);
+        blackQueen = ini.generateBitset("q", 900);
+        blackKing = ini.generateBitset("k", 600000);
         //White "Suit" locations
-        whitePawns = ini.generateBitset("P");
-        whiteRooks = ini.generateBitset("R");
-        whiteKnights = ini.generateBitset("N");
-        whiteBishops = ini.generateBitset("B");
-        whiteQueen = ini.generateBitset("Q");
-        whiteKing = ini.generateBitset("K");
+        whitePawns = ini.generateBitset("P", -100);
+        whiteRooks = ini.generateBitset("R", -500);
+        whiteKnights = ini.generateBitset("N", -300);
+        whiteBishops = ini.generateBitset("B", -300);
+        whiteQueen = ini.generateBitset("Q", -900);
+        whiteKing = ini.generateBitset("K", -600000);
 
 
         //Full representation of black pieces
@@ -123,18 +132,26 @@ public class TestCases {
                 "{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, " +
                         "48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63}"
         ));
+
+        //15
+        counter = 0;
+        System.out.printf("BoardValue case\n%d - ",counter);
+        BoardEvaluator b = new BoardEvaluator();
+        System.out.println(b.totalBoardValue(
+                whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueen, whiteKing,
+                blackPawns, blackRooks, blackKnights, blackBishops, blackQueen, blackKing) == 0);
     }
 
     public static void caseMovement(){
-        BitSet blackPawns, blackRooks, blackKnights, blackBishops, blackQueen, blackKing;
-        BitSet whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueen, whiteKing;
+        BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueen, blackKing;
+        BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueen, whiteKing;
         BitSet fullBlack = new BitSet(64);
         BitSet fullWhite = new BitSet(64);
         BitSet fullBoard = new BitSet(64);
         ChessMoveGenerator move = new ChessMoveGenerator();
         BoardInitializer ini = new BoardInitializer(new String[]{
-                " ", " ", " ", " ", " ", " ", " ", " ",
-                " ", " ", " ", " ", " ", " ", " ", " ",
+                "p", " ", " ", " ", " ", " ", " ", " ",
+                " ", "P", " ", " ", " ", " ", " ", "K",
                 "q", "q", "q", "q", " ", " ", "q", "q",
                 "R", "q", "Q", " ", "q", " ", "q", "B",
                 "q", "q", "q", "q", "N", " ", "q", "q",
@@ -145,20 +162,21 @@ public class TestCases {
 
         int counter = 0;
 
+        //Values in Centipawns
         //Black "Suit" locations
-        blackPawns = ini.generateBitset("p");
-        blackRooks = ini.generateBitset("r");
-        blackKnights = ini.generateBitset("n");
-        blackBishops = ini.generateBitset("b");
-        blackQueen = ini.generateBitset("q");
-        blackKing = ini.generateBitset("k");
+        blackPawns = ini.generateBitset("p", 100);
+        blackRooks = ini.generateBitset("r", 500);
+        blackKnights = ini.generateBitset("n", 300);
+        blackBishops = ini.generateBitset("b", 300);
+        blackQueen = ini.generateBitset("q", 900);
+        blackKing = ini.generateBitset("k", 600000);
         //White "Suit" locations
-        whitePawns = ini.generateBitset("P");
-        whiteRooks = ini.generateBitset("R");
-        whiteKnights = ini.generateBitset("N");
-        whiteBishops = ini.generateBitset("B");
-        whiteQueen = ini.generateBitset("Q");
-        whiteKing = ini.generateBitset("K");
+        whitePawns = ini.generateBitset("P", -100);
+        whiteRooks = ini.generateBitset("R", -500);
+        whiteKnights = ini.generateBitset("N", -300);
+        whiteBishops = ini.generateBitset("B", -300);
+        whiteQueen = ini.generateBitset("Q", -900);
+        whiteKing = ini.generateBitset("K", -600000);
 
 
         //Full representation of black pieces
@@ -190,8 +208,17 @@ public class TestCases {
         System.out.println(move.knightMovement(whiteKnights, fullWhite, fullBlack).toString().equals("{19, 21, 30, 42, 46, 51, 53}"));
         counter++;
         //4
+        System.out.printf("%d - ",counter);
+        System.out.println(move.kingMovement(whiteKing, fullWhite, fullBlack).toString().equals("{6, 7, 14, 22, 23}"));
+        counter++;
         //5
+        System.out.printf("%d - ",counter);
+        System.out.println(move.whitePawnMovement(whitePawns, fullWhite, fullBlack).toString().equals("{0, 1}"));
+        counter++;
         //6
+        System.out.printf("%d - ",counter);
+        System.out.println(move.blackPawnMovement(blackPawns, fullBoard, fullWhite).toString().equals("{8, 9}"));
+        counter++;
         //7
         //8
         //9

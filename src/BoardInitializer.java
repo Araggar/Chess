@@ -26,16 +26,13 @@ public class BoardInitializer {
     }
 
 
-
-    public BitSet generateBitset(String Piece){
-        BitSet blackPawnBitset = new BitSet(64);
+    public BitBoard generateBitset(String Piece, int value){
+        BitBoard pieceBitboard = new BitBoard(64, value);
         for (int i = 0; i < this.squares; ++i) {
             if (this.initialBoard[i].equals(Piece)) {
-                blackPawnBitset.set(i);
+                pieceBitboard.set(i);
             }
         }
-        return blackPawnBitset;
+        return pieceBitboard;
     }
-
-
 }
