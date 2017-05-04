@@ -3,15 +3,11 @@ import java.util.BitSet;
 /**
  * Created by Tyrael on 4/29/2017.
  */
-public class ChessMoveGenerator implements MoveGenerator {
+public class ChessMoveGenerator{
 
-    public void moveTo(int Index) {
-
-    }
-
-    public BitSet queenMovement(BitSet queen, BitSet allyBoard, BitSet enemyBoard) {
+    public BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
         BitSet movement = new BitSet(64);
-        int index = queen.nextSetBit(0);
+        int index = queenIndex;
         if(index > -1) {
             this.sideways(index, movement, allyBoard, enemyBoard);
             this.diagonal(index, movement, allyBoard, enemyBoard);
@@ -19,27 +15,27 @@ public class ChessMoveGenerator implements MoveGenerator {
         return movement;
     }
 
-    public BitSet rookMovement(BitSet rook, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
-        int index = rook.nextSetBit(0);
+        int index = rookIndex;
         if(index > -1) {
             this.sideways(index, movement, allyBoard, enemyBoard);
         }
         return movement;
     }
 
-    public BitSet bishopMovement(BitSet bishop, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
-        int index = bishop.nextSetBit(0);
+        int index = bishopIndex;
         if(index > -1) {
             this.diagonal(index, movement, allyBoard, enemyBoard);
         }
         return movement;
     }
 
-    public BitSet knightMovement(BitSet knight, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
-        int index = knight.nextSetBit(0);
+        int index = knightIndex;
         if(index > -1) {
             if (index + 10 < 64 && index % 8 < (index + 10) % 8) {
                 if(!allyBoard.get(index+10)) {
@@ -92,9 +88,9 @@ public class ChessMoveGenerator implements MoveGenerator {
         return movement;
     }
 
-    public BitSet kingMovement(BitSet king, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
-        int index = king.nextSetBit(0);
+        int index = kingIndex;
 
         if(index+1 < (index/8)*8 + 8 && !allyBoard.get(index+1)){
             movement.set(index+1);
@@ -131,9 +127,9 @@ public class ChessMoveGenerator implements MoveGenerator {
         return movement;
     }
 
-    public BitSet blackPawnMovement(BitSet pawn, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
     BitSet movement = new BitSet(64);
-    int index = pawn.nextSetBit(0);
+    int index = pawnIndex;
     if(index >- 1) {
         if(index+8 < 64 && !allyBoard.get(index+8) && !enemyBoard.get(index+8)){
             movement.set(index+8);
@@ -146,13 +142,17 @@ public class ChessMoveGenerator implements MoveGenerator {
         if(index+7 < 64 && index%8>(index+7)%8 && enemyBoard.get(index+7)){
             movement.set(index+7);
         }
+
+        if(index+16 < 64 && !allyBoard.get(index+16) && !enemyBoard.get(index+16) && this.in(index, new int[]{8,9,10,11,12,13,14,15})){
+            movement.set(index+16);
+        }
     }
     return movement;
     }
 
-    public BitSet whitePawnMovement(BitSet pawn, BitSet allyBoard, BitSet enemyBoard){
+    public BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
-        int index = pawn.nextSetBit(0);
+        int index = pawnIndex;
         if(index >- 1) {
             if(index-8 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8)){
                 movement.set(index-8);
@@ -164,6 +164,9 @@ public class ChessMoveGenerator implements MoveGenerator {
 
             if(index-7 > -1 && index%8<(index-7)%8 && enemyBoard.get(index-7)){
                 movement.set(index-7);
+            }
+            if(index-16 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8) && this.in(index, new int[]{48,49,50,51,52,53,54,55})){
+                movement.set(index-16);
             }
         }
         return movement;
@@ -294,8 +297,14 @@ public class ChessMoveGenerator implements MoveGenerator {
         }
     }
 
-
-
+    private boolean in (int i, int[] ugh){
+        for(int u : ugh){
+            if(i == u){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

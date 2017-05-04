@@ -5,6 +5,13 @@ import java.util.BitSet;
  */
 public class TestCases {
 
+    public static void caseGame(){
+        Game chess = new Game();
+        System.out.println(chess.blackPawns);
+        chess.move(8, 16, chess.blackPawns);
+        System.out.println(chess.blackPawns);
+    }
+
     public static void caseBitBoard(){
         BitBoard test = new BitBoard(64, 5);
         System.out.println(test.boardValue());
@@ -189,36 +196,7 @@ public class TestCases {
         fullBoard.or(fullBlack); fullBoard.or(fullWhite);
 
 
-        System.out.println("Movement Cases");
 
-        //0
-        System.out.printf("%d - ",counter);
-        System.out.println(move.queenMovement(whiteQueen, fullWhite, fullBlack).toString().equals("{17, 18, 19, 25, 27, 28, 33, 34, 35}"));
-        counter++;
-        //1
-        System.out.printf("%d - ",counter);
-        System.out.println(move.rookMovement(whiteRooks, fullWhite, fullBlack).cardinality()==3);
-        counter++;
-        //2
-        System.out.printf("%d - ",counter);
-        System.out.println(move.bishopMovement(whiteBishops, fullWhite, fullBlack).cardinality()==2);
-        counter++;
-        //3
-        System.out.printf("%d - ",counter);
-        System.out.println(move.knightMovement(whiteKnights, fullWhite, fullBlack).toString().equals("{19, 21, 30, 42, 46, 51, 53}"));
-        counter++;
-        //4
-        System.out.printf("%d - ",counter);
-        System.out.println(move.kingMovement(whiteKing, fullWhite, fullBlack).toString().equals("{6, 7, 14, 22, 23}"));
-        counter++;
-        //5
-        System.out.printf("%d - ",counter);
-        System.out.println(move.whitePawnMovement(whitePawns, fullWhite, fullBlack).toString().equals("{0, 1}"));
-        counter++;
-        //6
-        System.out.printf("%d - ",counter);
-        System.out.println(move.blackPawnMovement(blackPawns, fullBoard, fullWhite).toString().equals("{8, 9}"));
-        counter++;
         //7
         //8
         //9
