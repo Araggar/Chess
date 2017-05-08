@@ -15,7 +15,6 @@ public class Game {
     Game(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
          BitBoard whiteBishops, BitBoard whiteQueen, BitBoard whiteKing){
-
         //Values in Centipawns
         //Black "Suit" locations
         this.blackPawns = blackPawns;
@@ -56,29 +55,25 @@ public class Game {
         this(new BoardInitializer());
     }
 
-    public void move(int indexFrom, int indexTo,BitSet boardPiece,  BitSet blackPawns, BitSet blackRooks, BitSet blackKnights, BitSet blackBishops,
-                     BitSet blackQueens, BitSet blackKing, BitSet whitePawns, BitSet whiteRooks, BitSet whiteKnights,
-                     BitSet whiteBishops, BitSet whiteQueens, BitSet whiteKing){
-        blackBishops.clear(indexFrom);
-        blackPawns.clear(indexFrom);
-        blackKing.clear(indexFrom);
-        blackRooks.clear(indexFrom);
-        blackKnights.clear(indexFrom);
-        blackQueens.clear(indexFrom);
+    public void move(int indexFrom, int indexTo,BitSet boardPiece){
+        this.blackBishops.clear(indexFrom);
+        this.blackPawns.clear(indexFrom);
+        this.blackKing.clear(indexFrom);
+        this.blackRooks.clear(indexFrom);
+        this.blackKnights.clear(indexFrom);
+        this.blackQueens.clear(indexFrom);
 
-        whiteBishops.clear(indexFrom);
-        whitePawns.clear(indexFrom);
-        whiteKing.clear(indexFrom);
-        whiteQueens.clear(indexFrom);
-        whiteKnights.clear(indexFrom);
-        whiteRooks.clear(indexFrom);
+        this.whiteBishops.clear(indexFrom);
+        this.whitePawns.clear(indexFrom);
+        this.whiteKing.clear(indexFrom);
+        this.whiteQueens.clear(indexFrom);
+        this.whiteKnights.clear(indexFrom);
+        this.whiteRooks.clear(indexFrom);
 
         boardPiece.set(indexTo);
     }
 
-    public int finalMove(BitBoard allyPawns, BitBoard allyRooks, BitBoard allyKnights, BitBoard allyBishops,
-                         BitBoard allyQueens, BitBoard allyKing, BitBoard enemyPawns, BitBoard enemyRooks, BitBoard enemyKnights,
-                         BitBoard enemyBishops, BitBoard enemyQueens, BitBoard enemyKing){
+    public int finalMove(){
 
         BitSet fullBlack = new BitSet(64);
         BitSet fullWhite = new BitSet(64);
@@ -89,37 +84,216 @@ public class Game {
         fullWhite.or(whitePawns); fullWhite.or(whiteRooks); fullWhite.or(whiteKnights);
         fullWhite.or(whiteQueens); fullWhite.or(whiteKing); fullWhite.or(whiteBishops);
 
-        int cutoff = Integer.MIN_VALUE;
+        int cutoff = Integer.MAX_VALUE;
 
-        for(int i = allyQueens.nextSetBit(0); i >= 0; i = allyQueens.nextSetBit(i+1)){
-            BitSet queenMov = movGen.queenMovement(i, fullWhite, fullBlack);
-            for (int j = queenMov.nextSetBit(0); j >= 0; j = queenMov.nextSetBit(j + 1)){
-                BitSet copyAllyPawns = (BitSet) allyPawns.clone();
-                BitSet copyAllyRooks = (BitSet) allyRooks.clone();
-                BitSet copyAllyKnights = (BitSet) allyKnights.clone();
-                BitSet copyAllyBishops = (BitSet) allyBishops.clone();
-                BitSet copyAllyQueens = (BitSet) allyQueens.clone();
-                BitSet copyAllyKing = (BitSet) allyKing.clone();
-
-                BitSet copyEnemyPawns = (BitSet) allyPawns.clone();
-                BitSet copyEnemyRooks = (BitSet) allyRooks.clone();
-                BitSet copyEnemyKnights = (BitSet) allyKnights.clone();
-                BitSet copyEnemyBishops = (BitSet) allyBishops.clone();
-                BitSet copyEnemyQueens = (BitSet) allyQueens.clone();
-                BitSet copyEnemyKing = (BitSet) allyKing.clone();
-
-                this.move(i, j, copyAllyQueens, copyAllyPawns, copyAllyRooks, copyAllyKnights, copyAllyBishops,
-                        copyAllyQueens, copyAllyKing, copyEnemyPawns, copyEnemyRooks, copyEnemyKnights, copyEnemyBishops,
-                        copyEnemyQueens, copyEnemyKing);
-                int BoardValue = eval.totalBoardValue(copyAllyPawns,);
-                //todo evaluator if
-
-
+        for(int i = whiteQueens.nextSetBit(0); i >= 0; i = whiteQueens.nextSetBit(i+1)){
+            BitSet movements = movGen.queenMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.whiteQueens);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
             }
         }
 
+        for(int i = whitePawns.nextSetBit(0); i >= 0; i = whitePawns.nextSetBit(i+1)){
+            BitSet movements = movGen.whitePawnMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+
+                gameCopy.move(i, j, gameCopy.whitePawns);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
+            }
+        }
+
+        for(int i = whiteBishops.nextSetBit(0); i >= 0; i = whiteBishops.nextSetBit(i+1)){
+            BitSet movements = movGen.bishopMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+
+                gameCopy.move(i, j, gameCopy.whiteBishops);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
+            }
+        }
+
+        for(int i = whiteKnights.nextSetBit(0); i >= 0; i = whiteKnights.nextSetBit(i+1)){
+            BitSet movements = movGen.knightMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+
+                gameCopy.move(i, j, gameCopy.whiteKnights);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
+            }
+        }
+
+        for(int i = whiteRooks.nextSetBit(0); i >= 0; i = whiteRooks.nextSetBit(i+1)){
+            BitSet movements = movGen.rookMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+
+                gameCopy.move(i, j, gameCopy.whiteRooks);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
+            }
+        }
+
+        for(int i = whiteKing.nextSetBit(0); i >= 0; i = whiteKing.nextSetBit(i+1)){
+            BitSet movements = movGen.kingMovement(i, fullWhite, fullBlack);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+
+                gameCopy.move(i, j, gameCopy.whiteKing);
+                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
+                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
+                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                cutoff = Math.min(cutoff, boardValue);
+            }
+        }
+        return cutoff;
     }
 
 
+    public void simulate2ply(){
+        BitSet fullBlack = new BitSet(64);
+        BitSet fullWhite = new BitSet(64);
+        //Full representation of black pieces
+        fullBlack.or(blackPawns); fullBlack.or(blackRooks); fullBlack.or(blackKnights);
+        fullBlack.or(blackQueens); fullBlack.or(blackKing); fullBlack.or(blackBishops);
+        //Full representation of white pieces
+        fullWhite.or(whitePawns); fullWhite.or(whiteRooks); fullWhite.or(whiteKnights);
+        fullWhite.or(whiteQueens); fullWhite.or(whiteKing); fullWhite.or(whiteBishops);
 
+        int cutoff = Integer.MIN_VALUE;
+        Object[] move = new Object[3];
+
+        for(int i = blackQueens.nextSetBit(0); i >= 0; i = blackQueens.nextSetBit(i+1)){
+            BitSet movements = movGen.queenMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.whiteQueens);
+                int boardValue = gameCopy.finalMove();
+                if(boardValue > cutoff){
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackQueens;
+                }
+            }
+        }
+
+        for(int i = blackPawns.nextSetBit(0); i >= 0; i = blackPawns.nextSetBit(i+1)){
+            BitSet movements = movGen.blackPawnMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.blackPawns);
+                int boardValue = gameCopy.finalMove();
+                if(boardValue > cutoff){
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackPawns;
+                }
+            }
+        }
+
+        for(int i = blackKnights.nextSetBit(0); i >= 0; i = blackKnights.nextSetBit(i+1)){
+            BitSet movements = movGen.knightMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.blackKnights);
+                int boardValue = gameCopy.finalMove();
+                if(boardValue > cutoff){
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackKnights;
+                }
+            }
+        }
+
+        for(int i = blackBishops.nextSetBit(0); i >= 0; i = blackBishops.nextSetBit(i+1)){
+            BitSet movements = movGen.bishopMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.blackBishops);
+                int boardValue = gameCopy.finalMove();
+                if(boardValue > cutoff){
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackBishops;
+                }
+            }
+        }
+
+        for(int i = blackRooks.nextSetBit(0); i >= 0; i = blackRooks.nextSetBit(i+1)){
+            BitSet movements = movGen.rookMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
+                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                        (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
+                        (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.blackRooks);
+                int boardValue = gameCopy.finalMove();
+                if(boardValue > cutoff){
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackRooks;
+                }
+            }
+        }
+
+        for(int i = blackKing.nextSetBit(0); i >= 0; i = blackKing.nextSetBit(i+1)) {
+            BitSet movements = movGen.kingMovement(i, fullBlack, fullWhite);
+            for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)) {
+                Game gameCopy = new Game((BitBoard) blackPawns.clone(), (BitBoard) blackRooks.clone(), (BitBoard) blackKnights.clone(),
+                        (BitBoard) blackBishops.clone(), (BitBoard) blackQueens.clone(), (BitBoard) blackKing.clone(), (BitBoard) whitePawns.clone(), (BitBoard) whiteRooks.clone(),
+                        (BitBoard) whiteKnights.clone(), (BitBoard) whiteBishops.clone(), (BitBoard) whiteQueens.clone(), (BitBoard) whiteKing.clone());
+                gameCopy.move(i, j, gameCopy.blackKing);
+                int boardValue = gameCopy.finalMove();
+                if (boardValue > cutoff) {
+                    cutoff = boardValue;
+                    move[0] = i;
+                    move[1] = j;
+                    move[2] = blackKing;
+                }
+            }
+        }
+
+        this.move((int)move[0], (int)move[1],(BitBoard) move[2]);
+        System.out.printf("From:%d To:%d\n", move[0], move[1]);
+    }
 }

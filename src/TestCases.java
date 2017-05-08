@@ -7,9 +7,10 @@ public class TestCases {
 
     public static void caseGame(){
         Game chess = new Game();
-        System.out.println(chess.blackPawns);
-        chess.move(8, 16, chess.blackPawns);
-        System.out.println(chess.blackPawns);
+        chess.simulate2ply();
+        chess.simulate2ply();
+        chess.simulate2ply();
+        System.out.println(chess.finalMove());
     }
 
     public static void caseBitBoard(){
