@@ -1,9 +1,11 @@
+import javax.swing.*;
+import java.awt.*;
 import java.util.BitSet;
 
 /**
  * Created by Tyrael on 5/4/2017.
  */
-public class Game {
+public class ChessGame {
     BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
     BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
     BitSet blackBoard = new BitSet(64);
@@ -12,7 +14,7 @@ public class Game {
     ChessMoveGenerator movGen = new ChessMoveGenerator();
     BoardEvaluator eval = new BoardEvaluator();
 
-    Game(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
+    ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
          BitBoard whiteBishops, BitBoard whiteQueen, BitBoard whiteKing){
         //Values in Centipawns
@@ -30,9 +32,16 @@ public class Game {
         this.whiteBishops = whiteBishops;
         this.whiteQueens = whiteQueen;
         this.whiteKing = whiteKing;
+
+        whiteBoard.or(this.whitePawns); whiteBoard.or(this.whiteRooks); whiteBoard.or(this.whiteKnights);
+        whiteBoard.or(this.whiteQueens); whiteBoard.or(this.whiteKing); whiteBoard.or(this.whiteBishops);
+
+        blackBoard.or(this.blackPawns); blackBoard.or(this.blackRooks); blackBoard.or(this.blackKnights);
+        blackBoard.or(this.blackQueens); blackBoard.or(this.blackKing); blackBoard.or(this.blackBishops);
+
     }
 
-    Game(BoardInitializer ini){
+    ChessGame(BoardInitializer ini){
 
         //Values in Centipawns
         //Black "Suit" locations
@@ -49,9 +58,16 @@ public class Game {
         this.whiteBishops = ini.generateBitset("B", -300);
         this.whiteQueens = ini.generateBitset("Q", -900);
         this.whiteKing = ini.generateBitset("K", -600000);
+
+        whiteBoard.or(this.whitePawns); whiteBoard.or(this.whiteRooks); whiteBoard.or(this.whiteKnights);
+        whiteBoard.or(this.whiteQueens); whiteBoard.or(this.whiteKing); whiteBoard.or(this.whiteBishops);
+
+        blackBoard.or(this.blackPawns); blackBoard.or(this.blackRooks); blackBoard.or(this.blackKnights);
+        blackBoard.or(this.blackQueens); blackBoard.or(this.blackKing); blackBoard.or(this.blackBishops);
+
     }
 
-    Game(){
+    ChessGame(){
         this(new BoardInitializer());
     }
 
@@ -89,13 +105,13 @@ public class Game {
         for(int i = whiteQueens.nextSetBit(0); i >= 0; i = whiteQueens.nextSetBit(i+1)){
             BitSet movements = movGen.queenMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.whiteQueens);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteQueens);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -103,14 +119,14 @@ public class Game {
         for(int i = whitePawns.nextSetBit(0); i >= 0; i = whitePawns.nextSetBit(i+1)){
             BitSet movements = movGen.whitePawnMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
-                gameCopy.move(i, j, gameCopy.whitePawns);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whitePawns);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -118,14 +134,14 @@ public class Game {
         for(int i = whiteBishops.nextSetBit(0); i >= 0; i = whiteBishops.nextSetBit(i+1)){
             BitSet movements = movGen.bishopMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
-                gameCopy.move(i, j, gameCopy.whiteBishops);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteBishops);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -133,14 +149,14 @@ public class Game {
         for(int i = whiteKnights.nextSetBit(0); i >= 0; i = whiteKnights.nextSetBit(i+1)){
             BitSet movements = movGen.knightMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
-                gameCopy.move(i, j, gameCopy.whiteKnights);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteKnights);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -148,14 +164,14 @@ public class Game {
         for(int i = whiteRooks.nextSetBit(0); i >= 0; i = whiteRooks.nextSetBit(i+1)){
             BitSet movements = movGen.rookMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
-                gameCopy.move(i, j, gameCopy.whiteRooks);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteRooks);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -163,14 +179,14 @@ public class Game {
         for(int i = whiteKing.nextSetBit(0); i >= 0; i = whiteKing.nextSetBit(i+1)){
             BitSet movements = movGen.kingMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
-                gameCopy.move(i, j, gameCopy.whiteKing);
-                int boardValue = eval.totalBoardValue(gameCopy.whitePawns, gameCopy.whiteRooks, gameCopy.whiteKnights,
-                        gameCopy.whiteBishops, gameCopy.whiteQueens, gameCopy.whiteKing, gameCopy.blackPawns, gameCopy.blackRooks,
-                        gameCopy.blackKnights, gameCopy.blackBishops, gameCopy.blackQueens, gameCopy.blackKing);
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteKing);
+                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
+                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
+                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -194,11 +210,11 @@ public class Game {
         for(int i = blackQueens.nextSetBit(0); i >= 0; i = blackQueens.nextSetBit(i+1)){
             BitSet movements = movGen.queenMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.whiteQueens);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.whiteQueens);
+                int boardValue = ChessGameCopy.finalMove();
                 if(boardValue > cutoff){
                     cutoff = boardValue;
                     move[0] = i;
@@ -211,11 +227,11 @@ public class Game {
         for(int i = blackPawns.nextSetBit(0); i >= 0; i = blackPawns.nextSetBit(i+1)){
             BitSet movements = movGen.blackPawnMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.blackPawns);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.blackPawns);
+                int boardValue = ChessGameCopy.finalMove();
                 if(boardValue > cutoff){
                     cutoff = boardValue;
                     move[0] = i;
@@ -228,11 +244,11 @@ public class Game {
         for(int i = blackKnights.nextSetBit(0); i >= 0; i = blackKnights.nextSetBit(i+1)){
             BitSet movements = movGen.knightMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.blackKnights);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.blackKnights);
+                int boardValue = ChessGameCopy.finalMove();
                 if(boardValue > cutoff){
                     cutoff = boardValue;
                     move[0] = i;
@@ -245,11 +261,11 @@ public class Game {
         for(int i = blackBishops.nextSetBit(0); i >= 0; i = blackBishops.nextSetBit(i+1)){
             BitSet movements = movGen.bishopMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.blackBishops);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.blackBishops);
+                int boardValue = ChessGameCopy.finalMove();
                 if(boardValue > cutoff){
                     cutoff = boardValue;
                     move[0] = i;
@@ -262,11 +278,11 @@ public class Game {
         for(int i = blackRooks.nextSetBit(0); i >= 0; i = blackRooks.nextSetBit(i+1)){
             BitSet movements = movGen.rookMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
-                Game gameCopy = new Game((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.blackRooks);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.blackRooks);
+                int boardValue = ChessGameCopy.finalMove();
                 if(boardValue > cutoff){
                     cutoff = boardValue;
                     move[0] = i;
@@ -279,11 +295,11 @@ public class Game {
         for(int i = blackKing.nextSetBit(0); i >= 0; i = blackKing.nextSetBit(i+1)) {
             BitSet movements = movGen.kingMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)) {
-                Game gameCopy = new Game((BitBoard) blackPawns.clone(), (BitBoard) blackRooks.clone(), (BitBoard) blackKnights.clone(),
+                ChessGame ChessGameCopy = new ChessGame((BitBoard) blackPawns.clone(), (BitBoard) blackRooks.clone(), (BitBoard) blackKnights.clone(),
                         (BitBoard) blackBishops.clone(), (BitBoard) blackQueens.clone(), (BitBoard) blackKing.clone(), (BitBoard) whitePawns.clone(), (BitBoard) whiteRooks.clone(),
                         (BitBoard) whiteKnights.clone(), (BitBoard) whiteBishops.clone(), (BitBoard) whiteQueens.clone(), (BitBoard) whiteKing.clone());
-                gameCopy.move(i, j, gameCopy.blackKing);
-                int boardValue = gameCopy.finalMove();
+                ChessGameCopy.move(i, j, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.finalMove();
                 if (boardValue > cutoff) {
                     cutoff = boardValue;
                     move[0] = i;
@@ -295,5 +311,22 @@ public class Game {
 
         this.move((int)move[0], (int)move[1],(BitBoard) move[2]);
         System.out.printf("From:%d To:%d\n", move[0], move[1]);
+    }
+
+    public void updateBoard(JButton[] pieces){
+        for(int i = 0; i < 64; ++i){
+            if ((i % 2 != 0 && (i / 8) % 2 == 0) || (i % 2 == 0 && (i / 8) % 2 != 0)) {
+                pieces[i].setBackground(new Color(0, 0, 0));
+            } else {
+                pieces[i].setBackground(new Color(255, 255, 255));
+            }
+            if(blackBoard.get(i)){
+                pieces[i].setBackground(new Color(255,0,0));
+            }else{
+                if(whiteBoard.get(i)){
+                    pieces[i].setBackground(new Color(0,0,255));
+                }
+            }
+        }
     }
 }
