@@ -12,7 +12,7 @@ class Main {
        //TestCases.caseGenerator();
        //TestCases.caseMovement();
        //TestCases.caseGame();
-       System.out.printf("\nElapsed Time: %.8f ns",(System.nanoTime() - startTime)*0.000000001);
+       System.out.printf("\nElapsed Time: %.8f ns\n",(System.nanoTime() - startTime)*0.000000001);
 
        JFrame root = new JFrame();
        root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

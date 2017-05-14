@@ -14,4 +14,8 @@ public class BitBoard extends BitSet {
     public int boardValue(){
         return pieceValue*this.cardinality();
     }
+
+    public int pieceValue(){
+        return pieceValue;
+    }
 }
