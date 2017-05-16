@@ -64,6 +64,7 @@ public class ChessGUI {
     private void whereAreYou(int here){
         if(fromSq == -1){
             fromSq = here;
+            chess.highlightMovements(fromSq);
         }else{
             toSq = here;
             gameLoop = new Thread() {
@@ -79,13 +80,13 @@ public class ChessGUI {
     private void gameLoop() {
         if (chess.legalMove(fromSq, toSq)) {
             chess.moveAndUpdate(fromSq, toSq);
-            System.out.println("  " + toSq);
             chess.simulate2ply();
-            System.out.println("Your Turn Human");
+            System.out.println("Your Turn");
             fromSq = -1;
             toSq = -1;
         } else {
             System.out.println("Wrong Move");
+            chess.updateBoard();
             fromSq = -1;
             toSq = -1;
         }

@@ -371,37 +371,36 @@ public class ChessGame {
         for(int i = blackKnights.nextSetBit(0); i>=0; i = blackKnights.nextSetBit(++i)){
             this.buttonLocation[i].setText("BN");
             this.buttonLocation[i].setForeground(new Color(255,150,0));
-            System.out.println(i);
         }
 
         for(int i = whitePawns.nextSetBit(0); i>=0; i = whitePawns.nextSetBit(++i)){
             this.buttonLocation[i].setText("WP");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
 
         for(int i = whiteRooks.nextSetBit(0); i>=0; i = whiteRooks.nextSetBit(++i)){
             this.buttonLocation[i].setText("WR");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
 
         for(int i = whiteBishops.nextSetBit(0); i>=0; i = whiteBishops.nextSetBit(++i)){
             this.buttonLocation[i].setText("WB");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
 
         for(int i = whiteKnights.nextSetBit(0); i>=0; i = whiteKnights.nextSetBit(++i)){
             this.buttonLocation[i].setText("WN");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
 
         for(int i = whiteQueens.nextSetBit(0); i>=0; i = whiteQueens.nextSetBit(++i)){
             this.buttonLocation[i].setText("WQ");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
 
         for(int i = whiteKing.nextSetBit(0); i>=0; i = whiteKing.nextSetBit(++i)){
             this.buttonLocation[i].setText("WK");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
+            this.buttonLocation[i].setForeground(new Color(0,150,255));
         }
     }
 
@@ -414,11 +413,8 @@ public class ChessGame {
     public Boolean legalMove(int iFrom, int iTo){
         if(whiteBoard.get(iFrom)){
             BitBoard tempBoard = pieceFinder(iFrom);
-            System.out.println("1");
             if(legalMovement(iFrom, iTo, tempBoard)){
-                System.out.println("2");
                 if(!inCheck(iFrom, iTo)){
-                    System.out.println("3");
                     return true;
                 }
             }
@@ -520,6 +516,46 @@ public class ChessGame {
 
         blackBoard.or(this.blackPawns); blackBoard.or(this.blackRooks); blackBoard.or(this.blackKnights);
         blackBoard.or(this.blackQueens); blackBoard.or(this.blackKing); blackBoard.or(this.blackBishops);
+
+    }
+
+    public void highlightMovements(int iFrom){
+        if(whitePawns.get(iFrom)){
+            for(int i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }else{
+
+        if(whiteRooks.get(iFrom)){
+            for(int i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }else{
+
+        if(whiteBishops.get(iFrom)){
+            for(int i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }else{
+
+        if(whiteKnights.get(iFrom)){
+            for(int i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }else{
+
+        if(whiteQueens.get(iFrom)){
+            for(int i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }else{
+
+        if(whiteKing.get(iFrom)){
+            for(int i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.buttonLocation[i].setText("M");
+            }
+        }}}}}}
+
 
     }
 }

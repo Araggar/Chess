@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23c221a8-1e9c-4a0d-8a8a-04e12524e26e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/BitBoard.class" afterPath="$PROJECT_DIR$/out/production/Chess/BitBoard.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/ChessGUI$1.class" afterPath="$PROJECT_DIR$/out/production/Chess/ChessGUI$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/ChessGUI$2.class" afterPath="$PROJECT_DIR$/out/production/Chess/ChessGUI$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/ChessGUI.class" afterPath="$PROJECT_DIR$/out/production/Chess/ChessGUI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/ChessGame.class" afterPath="$PROJECT_DIR$/out/production/Chess/ChessGame.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/Main.class" afterPath="$PROJECT_DIR$/out/production/Chess/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Chess/TestCases.class" afterPath="$PROJECT_DIR$/out/production/Chess/TestCases.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BitBoard.java" afterPath="$PROJECT_DIR$/src/BitBoard.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BoardEvaluator.java" afterPath="$PROJECT_DIR$/src/BoardEvaluator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ChessGUI.java" afterPath="$PROJECT_DIR$/src/ChessGUI.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ChessGame.java" afterPath="$PROJECT_DIR$/src/ChessGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/TestCases.java" afterPath="$PROJECT_DIR$/src/TestCases.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,37 +20,18 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.80263156">
+    <splitter split-orientation="horizontal" split-proportion="0.70647776">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="ChessGame.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ChessGame.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="450" column="30" lean-forward="true" selection-start-line="450" selection-start-column="30" selection-end-line="450" selection-end-column="30" />
+                <state relative-caret-position="8619">
+                  <caret line="536" column="52" lean-forward="true" selection-start-line="536" selection-start-column="52" selection-end-line="536" selection-end-column="52" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="docComment;class#ChessGame#0" expanded="false" />
-                    <element signature="e#4641#4642#0" expanded="true" />
-                    <element signature="e#4702#4703#0" expanded="true" />
-                    <element signature="method#updateBoard#0;class#ChessGame#0" expanded="false" />
-                    <element signature="e#26106#26107#0" expanded="true" />
-                    <element signature="e#26134#26135#0" expanded="true" />
                     <element signature="method#legalMovement#0;class#ChessGame#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ChessMoveGenerator.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ChessMoveGenerator.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2618">
-                  <caret line="154" column="30" lean-forward="false" selection-start-line="154" selection-start-column="30" selection-end-line="154" selection-end-column="30" />
-                  <folding>
-                    <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
-                    <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-                    <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -72,8 +44,8 @@
           <file leaf-file-name="TestCases.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/TestCases.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="578">
-                  <caret line="49" column="50" lean-forward="true" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="50" />
+                <state relative-caret-position="799">
+                  <caret line="49" column="50" lean-forward="false" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="50" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="docComment;class#TestCases#0" expanded="false" />
@@ -85,8 +57,8 @@
           <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/Main.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="187">
-                  <caret line="17" column="59" lean-forward="true" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
+                <state relative-caret-position="204">
+                  <caret line="17" column="59" lean-forward="false" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#1186#1187#0" expanded="true" />
@@ -99,12 +71,12 @@
           <file leaf-file-name="ChessGUI.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ChessGUI.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="485">
-                  <caret line="87" column="42" lean-forward="false" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+                <state relative-caret-position="354">
+                  <caret line="88" column="32" lean-forward="false" selection-start-line="88" selection-start-column="32" selection-end-line="88" selection-end-column="32" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#2144#2258#0" expanded="true" />
-                    <element signature="e#2257#2258#0" expanded="true" />
+                    <element signature="e#1620#1621#0" expanded="true" />
+                    <element signature="e#1678#1679#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -136,8 +108,8 @@
           <file leaf-file-name="BoardEvaluator.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/BoardEvaluator.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2363">
-                  <caret line="139" column="86" lean-forward="false" selection-start-line="139" selection-start-column="86" selection-end-line="139" selection-end-column="86" />
+                <state relative-caret-position="263">
+                  <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
                   <folding>
                     <element signature="method#whiteBoardEvaluation#0;class#BoardEvaluator#0" expanded="false" />
                   </folding>
@@ -170,6 +142,8 @@
       <find>i++</find>
       <find>new Color(255,255,0)</find>
       <find>simul</find>
+      <find>System</find>
+      <find>in</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -186,13 +160,13 @@
         <option value="$PROJECT_DIR$/Main.java" />
         <option value="$PROJECT_DIR$/src/MoveGenerator.java" />
         <option value="$PROJECT_DIR$/src/BoardInitializer.java" />
-        <option value="$PROJECT_DIR$/src/BoardEvaluator.java" />
         <option value="$PROJECT_DIR$/src/ChessMoveGenerator.java" />
         <option value="$PROJECT_DIR$/src/MainGui.java" />
         <option value="$PROJECT_DIR$/src/Game.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/TestCases.java" />
         <option value="$PROJECT_DIR$/src/BitBoard.java" />
+        <option value="$PROJECT_DIR$/src/BoardEvaluator.java" />
         <option value="$PROJECT_DIR$/src/ChessGUI.java" />
         <option value="$PROJECT_DIR$/src/ChessGame.java" />
       </list>
@@ -495,8 +469,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24233128" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31748468" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -506,8 +480,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -548,8 +522,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2144#2258#0" expanded="true" />
-            <element signature="e#2257#2258#0" expanded="true" />
+            <element signature="e#1620#1621#0" expanded="true" />
+            <element signature="e#1678#1679#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -590,11 +564,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#ChessGame#0" expanded="false" />
-            <element signature="e#4641#4642#0" expanded="true" />
-            <element signature="e#4702#4703#0" expanded="true" />
-            <element signature="method#updateBoard#0;class#ChessGame#0" expanded="false" />
-            <element signature="e#26106#26107#0" expanded="true" />
-            <element signature="e#26134#26135#0" expanded="true" />
             <element signature="method#legalMovement#0;class#ChessGame#0" expanded="false" />
           </folding>
         </state>
@@ -607,7 +576,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -671,11 +639,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#ChessGame#0" expanded="false" />
-            <element signature="e#4641#4642#0" expanded="true" />
-            <element signature="e#4702#4703#0" expanded="true" />
-            <element signature="method#updateBoard#0;class#ChessGame#0" expanded="false" />
-            <element signature="e#26106#26107#0" expanded="true" />
-            <element signature="e#26134#26135#0" expanded="true" />
             <element signature="method#legalMovement#0;class#ChessGame#0" expanded="false" />
           </folding>
         </state>
@@ -698,7 +661,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -762,7 +724,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -826,7 +787,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -932,7 +892,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -944,7 +903,6 @@
           <folding>
             <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
             <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -994,20 +952,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BoardEvaluator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2363">
-          <caret line="139" column="86" lean-forward="false" selection-start-line="139" selection-start-column="86" selection-end-line="139" selection-end-column="86" />
-          <folding>
-            <element signature="method#whiteBoardEvaluation#0;class#BoardEvaluator#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="17" column="59" lean-forward="true" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
+        <state relative-caret-position="204">
+          <caret line="17" column="59" lean-forward="false" selection-start-line="17" selection-start-column="59" selection-end-line="17" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1186#1187#0" expanded="true" />
@@ -1037,8 +985,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TestCases.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="49" column="50" lean-forward="true" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="50" />
+        <state relative-caret-position="799">
+          <caret line="49" column="50" lean-forward="false" selection-start-line="49" selection-start-column="45" selection-end-line="49" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#TestCases#0" expanded="false" />
@@ -1046,42 +994,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ChessMoveGenerator.java">
+    <entry file="file://$PROJECT_DIR$/src/BoardEvaluator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2618">
-          <caret line="154" column="30" lean-forward="false" selection-start-line="154" selection-start-column="30" selection-end-line="154" selection-end-column="30" />
+        <state relative-caret-position="263">
+          <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
           <folding>
-            <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
-            <element signature="method#in#0;class#ChessMoveGenerator#0" expanded="false" />
+            <element signature="method#whiteBoardEvaluation#0;class#BoardEvaluator#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ChessGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="87" column="42" lean-forward="false" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+        <state relative-caret-position="354">
+          <caret line="88" column="32" lean-forward="false" selection-start-line="88" selection-start-column="32" selection-end-line="88" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2144#2258#0" expanded="true" />
-            <element signature="e#2257#2258#0" expanded="true" />
+            <element signature="e#1620#1621#0" expanded="true" />
+            <element signature="e#1678#1679#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ChessMoveGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="145" column="92" lean-forward="false" selection-start-line="145" selection-start-column="90" selection-end-line="145" selection-end-column="92" />
+          <folding>
+            <element signature="method#diagonal#0;class#ChessMoveGenerator#0" expanded="false" />
+            <element signature="method#sideways#0;class#ChessMoveGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ChessGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="450" column="30" lean-forward="true" selection-start-line="450" selection-start-column="30" selection-end-line="450" selection-end-column="30" />
+        <state relative-caret-position="8619">
+          <caret line="536" column="52" lean-forward="true" selection-start-line="536" selection-start-column="52" selection-end-line="536" selection-end-column="52" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#ChessGame#0" expanded="false" />
-            <element signature="e#4641#4642#0" expanded="true" />
-            <element signature="e#4702#4703#0" expanded="true" />
-            <element signature="method#updateBoard#0;class#ChessGame#0" expanded="false" />
-            <element signature="e#26106#26107#0" expanded="true" />
-            <element signature="e#26134#26135#0" expanded="true" />
             <element signature="method#legalMovement#0;class#ChessGame#0" expanded="false" />
           </folding>
         </state>
