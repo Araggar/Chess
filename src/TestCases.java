@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.BitSet;
 
 /**
@@ -6,7 +7,7 @@ import java.util.BitSet;
 public class TestCases {
 
     public static void caseGame(){
-        Game chess = new Game();
+        ChessGame chess = new ChessGame(new JButton[64]);
         chess.simulate2ply();
         chess.simulate2ply();
         chess.simulate2ply();
