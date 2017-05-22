@@ -1,0 +1,49 @@
+
+<!doctype html>
+<meta charset="latin-1">
+<html><body><pre>
+-- Xadrez Player vs IA
+
+Lucas Mayr de Atayde
+
+
+-- Projeto
+IA Simples - Gerar o melhor movimento possível simulando 'n' jogadas
+Tabuleiro - Representação do tabuleiro usando BitSets
+Peças - Extensão do tabuleiro que recebe um valor constante de valor de peça
+Gerador de tabuleiro/peças de propósito geral - Gera o tabuleiro/peças a partir de um array de Strings
+Chess - Engine do jogo de Xadrez que simula jogadas e faz a checagem de movimentos permitidos do jogador humano
+Chess GUI - Interface onde cada botão representa um quadrado do tabuleiro
+
+
+Interatividade entre jogo-jogador feita através de botões em um tabuleiro 8x8
+
+O tabuleiro é composto por um JPanel com um GridLayout, que por sua vez guarda um botão em cada
+	slot do array. Os botões repesentam o local do tabuleiro (0-63) e é por eles que o jogador faz os movimentos
+	
+Os tabuleiros são dividos entre as peças, e como são arrays de Booleans conseguem realizar operações lógicas
+	em poucos ciclos de relógio, O tabuleiro completo se da pela operação lógica 'OU' de todas as peças. Similarmente
+	as operações de checagem de 'Check*' e 'Checkmate**' e as operações de geração de movimentos utilizam dessa
+	propriedade para realizarem seus métodos mais rapidamente, principalmente na simulação de movimentos da IA.
+* Ou lógico de movimentos de peças inimigas (6 tabuleiros unidos com operação 'OU') e checando-se o index
+	da posição do rei aliado, se for verdadeira existe 'Check' senão não.
+** Se o rei esta em 'Check' e todo movimento possível não tira o rei do estado de 'Check' o jogo acaba.
+
+
+Obs: Peças ilustrativas
+Obs2: "!!!" Representam os movimentos permitidos
+
+Tabuleiro
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/g544Lv/Board.png" alt="Board" border="0"></a>
+
+Movimentos White Knight
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/fRiyfv/Movimentos_Knight.png" alt="Movimentos_Knight" border="0"></a>
+ 
+Movimentos White Queen
+<a href="https://imgbb.com/"><img src="https://image.ibb.co/nPvYDF/Movimentos_Queen.png" alt="Movimentos_Queen" border="0"></a>
+
+*Peças serão trocadas por imagens e movimentos permitidos por uma coloração diferente no tabuleiro.
+
+</pre>
+</body></html>
+
