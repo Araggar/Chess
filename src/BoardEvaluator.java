@@ -1,7 +1,7 @@
 /**
  * Created by Tyrael on 4/30/2017.
  */
-public class BoardEvaluator {
+public class BoardEvaluator implements Evaluator{
 
     private int[] blackPawnPositionalValues = {
              0,  0,  0,  0,  0,  0,  0,  0,

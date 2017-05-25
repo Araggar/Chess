@@ -7,7 +7,7 @@ import java.util.BitSet;
 public class TestCases {
 
     public static void caseGame(){
-        ChessGame chess = new ChessGame(new JButton[64]);
+        ChessGame chess = new ChessGame();
         chess.simulate2ply();
         chess.simulate2ply();
         chess.simulate2ply();

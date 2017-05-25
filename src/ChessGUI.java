@@ -1,20 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.BitSet;
 import java.util.Scanner;
 
 /**
  * Created by Tyrael on 5/13/2017.
  */
-public class ChessGUI {
+public class ChessGUI extends ChessGame {
     JFrame chessRoot;
-    ChessGame chess;
     Scanner in;
     Thread gameLoop;
     int fromSq, toSq;
+    JButton[] pieceLocation;
+    JPanel[] panelLocation;
 
 
     ChessGUI(JFrame root){
+        super();
         this.chessRoot = root;
         in = new Scanner(System.in);
         fromSq = -1;
@@ -26,16 +29,21 @@ public class ChessGUI {
     private void ini() {
         JPanel board = new JPanel();
         board.setLayout(new GridLayout(8, 8));
-        JButton[] pieceLocation = new JButton[64];
-        JPanel[] panelLocation = new JPanel[64];
+        pieceLocation = new JButton[64];
+        panelLocation = new JPanel[64];
+        JPanel[] buttonBackground = new JPanel[64];
         for (int i = 0; i < 64; ++i) {
             panelLocation[i] = new JPanel();
-            panelLocation[i].setOpaque(true);
+            panelLocation[i].setBackground(new Color(150,150,0,255));
             panelLocation[i].setPreferredSize(new Dimension(60,60));
+            panelLocation[i].setOpaque(false);
+            buttonBackground[i] = new JPanel();
+            buttonBackground[i].setLayout(new BorderLayout());
+            buttonBackground[i].setPreferredSize(new Dimension(60,60));
             if ((i % 2 != 0 && (i / 8) % 2 == 0) || (i % 2 == 0 && (i / 8) % 2 != 0)) {
-                panelLocation[i].setBackground(new Color(0, 0, 0));
+                buttonBackground[i].setBackground(new Color(0, 0, 0));
             } else {
-                panelLocation[i].setBackground(new Color(255, 255, 255));
+                buttonBackground[i].setBackground(new Color(255, 255, 255));
             }
 
             pieceLocation[i] = new JButton();
@@ -51,20 +59,25 @@ public class ChessGUI {
                     whereAreYou(index);
                 }
             });
-            board.add(panelLocation[i]);
+            board.add(buttonBackground[i]);
+            buttonBackground[i].add(panelLocation[i], BorderLayout.CENTER);
             panelLocation[i].add(pieceLocation[i]);
         }
-        chess = new ChessGame(pieceLocation);
-        chess.updateBoard();
+        this.updateBoard();
         this.chessRoot.add(board);
         this.chessRoot.pack();
         this.chessRoot.setVisible(true);
     }
 
+    void move(int indexFrom, int indexTo,BitSet boardPiece){
+        super.move( indexFrom, indexTo, boardPiece);
+        updateBoard();
+    }
+
     private void whereAreYou(int here){
         if(fromSq == -1){
             fromSq = here;
-            chess.highlightMovements(fromSq);
+            this.highlightMovements(fromSq);
         }else{
             toSq = here;
             gameLoop = new Thread() {
@@ -78,19 +91,133 @@ public class ChessGUI {
     }
 
     private void gameLoop() {
-        if (chess.legalMove(fromSq, toSq)) {
-            chess.moveAndUpdate(fromSq, toSq);
-            chess.simulate2ply();
+        if (legalMove(fromSq, toSq)) {
+            move(fromSq, toSq, pieceFinder(fromSq));
+            simulate2ply();
             System.out.println("Your Turn");
             fromSq = -1;
             toSq = -1;
         } else {
             System.out.println("Wrong Move");
-            chess.updateBoard();
+            updateBoard();
             fromSq = -1;
             toSq = -1;
         }
     }
+
+    public void updateBoard(){
+        clearBoard();
+        for(int i = blackPawns.nextSetBit(0); i>=0; i = blackPawns.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BP");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = blackRooks.nextSetBit(0); i>=0; i = blackRooks.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BR");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = blackBishops.nextSetBit(0); i>=0; i = blackBishops.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BB");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = blackQueens.nextSetBit(0); i>=0; i = blackQueens.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BQ");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = blackKing.nextSetBit(0); i>=0; i = blackKing.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BK");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = blackKnights.nextSetBit(0); i>=0; i = blackKnights.nextSetBit(++i)){
+            this.pieceLocation[i].setText("BN");
+            this.pieceLocation[i].setForeground(new Color(255,150,0));
+        }
+
+        for(int i = whitePawns.nextSetBit(0); i>=0; i = whitePawns.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WP");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+
+        for(int i = whiteRooks.nextSetBit(0); i>=0; i = whiteRooks.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WR");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+
+        for(int i = whiteBishops.nextSetBit(0); i>=0; i = whiteBishops.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WB");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+
+        for(int i = whiteKnights.nextSetBit(0); i>=0; i = whiteKnights.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WN");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+
+        for(int i = whiteQueens.nextSetBit(0); i>=0; i = whiteQueens.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WQ");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+
+        for(int i = whiteKing.nextSetBit(0); i>=0; i = whiteKing.nextSetBit(++i)){
+            this.pieceLocation[i].setText("WK");
+            this.pieceLocation[i].setForeground(new Color(0,150,255));
+        }
+        chessRoot.repaint();
+    }
+
+    private void clearBoard(){
+        for(JButton b : this.pieceLocation){
+            b.setText("");
+        }
+        for(JPanel p : this.panelLocation){
+            p.setOpaque(false);
+        }
+    }
+
+    public void highlightMovements(int iFrom){
+        if(whitePawns.get(iFrom)){
+            for(int i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                this.panelLocation[i].setOpaque(true);
+            }
+        }else{
+
+            if(whiteRooks.get(iFrom)){
+                for(int i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                    this.panelLocation[i].setOpaque(true);
+                }
+            }else{
+
+                if(whiteBishops.get(iFrom)){
+                    for(int i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                        this.panelLocation[i].setOpaque(true);
+                    }
+                }else{
+
+                    if(whiteKnights.get(iFrom)){
+                        for(int i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                            this.panelLocation[i].setOpaque(true);
+                        }
+                    }else{
+
+                        if(whiteQueens.get(iFrom)){
+                            for(int i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                                this.panelLocation[i].setOpaque(true);
+                            }
+                        }else{
+
+                            if(whiteKing.get(iFrom)){
+                                for(int i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                                    this.panelLocation[i].setOpaque(true);
+                                }
+                            }}}}}}
+    chessRoot.repaint();
+    }
+
+
 
 
 }
