@@ -9,7 +9,6 @@ import java.util.BitSet;
     BitSet blackBoard = new BitSet(64);
     BitSet whiteBoard = new BitSet(64);
     BitSet fullBoard = new BitSet(64);
-    ChessMoveGenerator movGen = new ChessMoveGenerator();
     Evaluator eval = new BoardEvaluator();
 
     ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
@@ -117,7 +116,7 @@ import java.util.BitSet;
         int cutoff = Integer.MAX_VALUE;
 
         for(int i = whiteQueens.nextSetBit(0); i >= 0; i = whiteQueens.nextSetBit(i+1)){
-            BitSet movements = movGen.queenMovement(i, fullWhite, fullBlack);
+            BitSet movements = queenMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -131,7 +130,7 @@ import java.util.BitSet;
         }
 
         for(int i = whitePawns.nextSetBit(0); i >= 0; i = whitePawns.nextSetBit(i+1)){
-            BitSet movements = movGen.whitePawnMovement(i, fullWhite, fullBlack);
+            BitSet movements = whitePawnMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -146,7 +145,7 @@ import java.util.BitSet;
         }
 
         for(int i = whiteBishops.nextSetBit(0); i >= 0; i = whiteBishops.nextSetBit(i+1)){
-            BitSet movements = movGen.bishopMovement(i, fullWhite, fullBlack);
+            BitSet movements = bishopMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -161,7 +160,7 @@ import java.util.BitSet;
         }
 
         for(int i = whiteKnights.nextSetBit(0); i >= 0; i = whiteKnights.nextSetBit(i+1)){
-            BitSet movements = movGen.knightMovement(i, fullWhite, fullBlack);
+            BitSet movements = knightMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -176,7 +175,7 @@ import java.util.BitSet;
         }
 
         for(int i = whiteRooks.nextSetBit(0); i >= 0; i = whiteRooks.nextSetBit(i+1)){
-            BitSet movements = movGen.rookMovement(i, fullWhite, fullBlack);
+            BitSet movements = rookMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -191,7 +190,7 @@ import java.util.BitSet;
         }
 
         for(int i = whiteKing.nextSetBit(0); i >= 0; i = whiteKing.nextSetBit(i+1)){
-            BitSet movements = movGen.kingMovement(i, fullWhite, fullBlack);
+            BitSet movements = kingMovement(i, fullWhite, fullBlack);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -222,7 +221,7 @@ import java.util.BitSet;
         Object[] move = new Object[3];
 
         for(int i = blackQueens.nextSetBit(0); i >= 0; i = blackQueens.nextSetBit(i+1)){
-            BitSet movements = movGen.queenMovement(i, fullBlack, fullWhite);
+            BitSet movements = queenMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -239,7 +238,7 @@ import java.util.BitSet;
         }
 
         for(int i = blackPawns.nextSetBit(0); i >= 0; i = blackPawns.nextSetBit(i+1)){
-            BitSet movements = movGen.blackPawnMovement(i, fullBlack, fullWhite);
+            BitSet movements = blackPawnMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -256,7 +255,7 @@ import java.util.BitSet;
         }
 
         for(int i = blackKnights.nextSetBit(0); i >= 0; i = blackKnights.nextSetBit(i+1)){
-            BitSet movements = movGen.knightMovement(i, fullBlack, fullWhite);
+            BitSet movements = knightMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -273,7 +272,7 @@ import java.util.BitSet;
         }
 
         for(int i = blackBishops.nextSetBit(0); i >= 0; i = blackBishops.nextSetBit(i+1)){
-            BitSet movements = movGen.bishopMovement(i, fullBlack, fullWhite);
+            BitSet movements = bishopMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -290,7 +289,7 @@ import java.util.BitSet;
         }
 
         for(int i = blackRooks.nextSetBit(0); i >= 0; i = blackRooks.nextSetBit(i+1)){
-            BitSet movements = movGen.rookMovement(i, fullBlack, fullWhite);
+            BitSet movements = rookMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                         (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
@@ -307,7 +306,7 @@ import java.util.BitSet;
         }
 
         for(int i = blackKing.nextSetBit(0); i >= 0; i = blackKing.nextSetBit(i+1)) {
-            BitSet movements = movGen.kingMovement(i, fullBlack, fullWhite);
+            BitSet movements = kingMovement(i, fullBlack, fullWhite);
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)) {
                 ChessGame ChessGameCopy = new ChessGame((BitBoard) blackPawns.clone(), (BitBoard) blackRooks.clone(), (BitBoard) blackKnights.clone(),
                         (BitBoard) blackBishops.clone(), (BitBoard) blackQueens.clone(), (BitBoard) blackKing.clone(), (BitBoard) whitePawns.clone(), (BitBoard) whiteRooks.clone(),
@@ -347,27 +346,27 @@ import java.util.BitSet;
         ChessGameCopy.move(iFrom, iTo, ChessGameCopy.pieceFinder(iFrom));
         BitSet allMovements = new BitSet(64);
         for(int i = ChessGameCopy.blackRooks.nextSetBit(0); i >= 0; i = ChessGameCopy.blackRooks.nextSetBit(i+1)){
-            allMovements.or(movGen.rookMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(rookMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         for(int i = ChessGameCopy.blackPawns.nextSetBit(0); i >= 0; i = ChessGameCopy.blackPawns.nextSetBit(i+1)){
-            allMovements.or(movGen.blackPawnMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(blackPawnMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         for(int i = ChessGameCopy.blackBishops.nextSetBit(0); i >= 0; i = ChessGameCopy.blackBishops.nextSetBit(i+1)){
-            allMovements.or(movGen.bishopMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(bishopMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         for(int i = ChessGameCopy.blackKnights.nextSetBit(0); i >= 0; i = ChessGameCopy.blackKnights.nextSetBit(i+1)){
-            allMovements.or(movGen.knightMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(knightMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         for(int i = ChessGameCopy.blackQueens.nextSetBit(0); i >= 0; i = ChessGameCopy.blackQueens.nextSetBit(i+1)){
-            allMovements.or(movGen.queenMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(queenMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         for(int i = ChessGameCopy.blackKing.nextSetBit(0); i >= 0; i = ChessGameCopy.blackKing.nextSetBit(i+1)){
-            allMovements.or(movGen.kingMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
+            allMovements.or(kingMovement(i, ChessGameCopy.blackBoard, ChessGameCopy.whiteBoard));
         }
 
         return allMovements.get(ChessGameCopy.whiteKing.nextSetBit(0));
@@ -405,22 +404,22 @@ import java.util.BitSet;
     private Boolean legalMovement(int iFrom, int iTo, BitBoard piece){
         BitSet movements;
         switch (piece.pieceValue()){
-            case -100 : movements = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard);
+            case -100 : movements = whitePawnMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -300 : movements = movGen.knightMovement(iFrom, whiteBoard, blackBoard);
+            case -300 : movements = knightMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -301 : movements = movGen.bishopMovement(iFrom, whiteBoard, blackBoard);
+            case -301 : movements = bishopMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -500 : movements = movGen.rookMovement(iFrom, whiteBoard, blackBoard);
+            case -500 : movements = rookMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -900 : movements = movGen.queenMovement(iFrom, whiteBoard, blackBoard);
+            case -900 : movements = queenMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            default : movements = movGen.kingMovement(iFrom, whiteBoard, blackBoard);
+            default : movements = kingMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
         }
     }
@@ -435,6 +434,307 @@ import java.util.BitSet;
         blackBoard.or(this.blackPawns); blackBoard.or(this.blackRooks); blackBoard.or(this.blackKnights);
         blackBoard.or(this.blackQueens); blackBoard.or(this.blackKing); blackBoard.or(this.blackBishops);
 
+    }
+
+    public BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
+        BitSet movement = new BitSet(64);
+        int index = queenIndex;
+        if(index > -1) {
+            this.sideways(index, movement, allyBoard, enemyBoard);
+            this.diagonal(index, movement, allyBoard, enemyBoard);
+        }
+        return movement;
+    }
+
+    public BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = rookIndex;
+        if(index > -1) {
+            this.sideways(index, movement, allyBoard, enemyBoard);
+        }
+        return movement;
+    }
+
+    public BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = bishopIndex;
+        if(index > -1) {
+            this.diagonal(index, movement, allyBoard, enemyBoard);
+        }
+        return movement;
+    }
+
+    public BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = knightIndex;
+        if(index > -1) {
+            if (index + 10 < 64 && index % 8 < (index + 10) % 8) {
+                if(!allyBoard.get(index+10)) {
+                    movement.set(index + 10);
+                }
+            }
+
+            if (index - 10 > -1 && index % 8 > (index - 10) % 8) {
+                if(!allyBoard.get(index - 10)) {
+                    movement.set(index - 10);
+                }
+            }
+
+            if (index + 17 < 64 && index % 8 < (index + 17) % 8) {
+                if(!allyBoard.get(index + 17)) {
+                    movement.set(index + 17);
+                }
+            }
+
+            if (index - 17 > -1 && index % 8 > (index - 17) % 8) {
+                if(!allyBoard.get(index - 17)) {
+                    movement.set(index - 17);
+                }
+            }
+
+            if (index + 15 < 64 && index % 8 > (index + 15) % 8) {
+                if(!allyBoard.get(index + 15)) {
+                    movement.set(index + 15);
+                }
+            }
+
+            if (index - 15 > -1 && index % 8 < (index - 15) % 8) {
+                if(!allyBoard.get(index - 15)) {
+                    movement.set(index - 15);
+                }
+            }
+
+            if (index + 6 < 64 && index % 8 > (index + 6) % 8) {
+                if(!allyBoard.get(index + 6)) {
+                    movement.set(index + 6);
+                }
+            }
+
+            if (index - 6 > -1 && index % 8 < (index - 6) % 8) {
+                if(!allyBoard.get(index - 6)) {
+                    movement.set(index - 6);
+                }
+            }
+        }
+        return movement;
+    }
+
+    public BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = kingIndex;
+
+        if(index+1 < (index/8)*8 + 8 && !allyBoard.get(index+1)){
+            movement.set(index+1);
+        }
+
+        if(index+8 < 64 && !allyBoard.get(index+8)){
+            movement.set(index+8);
+        }
+
+        if(index+9 < 64 && index%8<(index+9)%8 && !allyBoard.get(index+9)){
+            movement.set(index+9);
+        }
+
+        if(index+7 < 64 && index%8>(index+7)%8 && !allyBoard.get(index+7)){
+            movement.set(index+7);
+        }
+
+        if(index-1 > (index/8)*8 -1 && !allyBoard.get(index-1)){
+            movement.set(index-1);
+        }
+
+        if(index-8 > -1 && !allyBoard.get(index-8)){
+            movement.set(index-8);
+        }
+
+        if(index-9 > -1 && index%8>(index-9)%8 && !allyBoard.get(index-9)){
+            movement.set(index-9);
+        }
+
+        if(index-7 > -1 && index%8<(index-7)%8 && !allyBoard.get(index-7)){
+            movement.set(index-7);
+        }
+
+        return movement;
+    }
+
+    public BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = pawnIndex;
+        if(index >- 1) {
+            if(index+8 < 64 && !allyBoard.get(index+8) && !enemyBoard.get(index+8)){
+                movement.set(index+8);
+            }
+
+            if(index+9 < 64 && index%8<(index+9)%8 && enemyBoard.get(index+9)){
+                movement.set(index+9);
+            }
+
+            if(index+7 < 64 && index%8>(index+7)%8 && enemyBoard.get(index+7)){
+                movement.set(index+7);
+            }
+
+            if(index+16 < 64 && !allyBoard.get(index+16) && !enemyBoard.get(index+16) && this.in(index, new int[]{8,9,10,11,12,13,14,15})){
+                movement.set(index+16);
+            }
+        }
+        return movement;
+    }
+
+    public BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+        BitSet movement = new BitSet(64);
+        int index = pawnIndex;
+        if(index >- 1) {
+            if(index-8 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8)){
+                movement.set(index-8);
+            }
+
+            if(index-9 > -1 && index%8>(index-9)%8 && enemyBoard.get(index-9)){
+                movement.set(index-9);
+            }
+
+            if(index-7 > -1 && index%8<(index-7)%8 && enemyBoard.get(index-7)){
+                movement.set(index-7);
+            }
+            if(index-16 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8) && this.in(index, new int[]{48,49,50,51,52,53,54,55})){
+                movement.set(index-16);
+            }
+        }
+        return movement;
+    }
+
+    private void diagonal(int index, BitSet movement, BitSet allyBoard, BitSet enemyBoard){
+
+        //Down-Right
+        for (int i = index + 9; i < 64; i = i + 9) {
+            if( i%8 == 0) { break;}else{
+                if (allyBoard.get(i)) {
+                    break;
+                } else {
+                    if (enemyBoard.get(i)) {
+                        movement.set(i);
+                        break;
+                    } else {
+                        movement.set(i);
+                    }
+                }
+            }
+        }
+
+        //Down-Left
+        for (int i = index + 7; i < 64; i = i + 7) {
+            if (index%8 < i%8) {break;}else{
+                if (allyBoard.get(i)) {
+                    break;
+                } else {
+                    if (enemyBoard.get(i)) {
+                        movement.set(i);
+                        break;
+                    } else {
+                        movement.set(i);
+                    }
+                }
+            }
+        }
+
+        //Up-Left
+        for (int i = index - 9; i > 0; i = i - 9) {
+            if (index%8 < i%8) {break;}else {
+                if (allyBoard.get(i)) {
+                    break;
+                } else {
+                    if (enemyBoard.get(i)) {
+                        movement.set(i);
+                        break;
+                    } else {
+                        movement.set(i);
+                    }
+                }
+            }
+        }
+
+        //Up-Right
+        for (int i = index - 7; i > 0; i = i - 7) {
+            if(i%8 == 0){break;}else {
+                if (allyBoard.get(i)) {
+                    break;
+                } else {
+                    if (enemyBoard.get(i)) {
+                        movement.set(i);
+                        break;
+                    } else {
+                        movement.set(i);
+                    }
+                }
+            }
+        }
+    }
+
+    private void sideways(int index, BitSet movement, BitSet allyBoard, BitSet enemyBoard){
+        //Down
+        for (int i = index + 8; i < 64; i = i + 8) {
+            if (allyBoard.get(i)) {
+                break;
+            } else {
+                if (enemyBoard.get(i)) {
+                    movement.set(i);
+                    break;
+                } else {
+                    movement.set(i);
+                }
+            }
+        }
+
+        //Right
+        for (int i = index + 1; i < (index/8)*8 + 8; ++i) {
+            if (allyBoard.get(i)) {
+                break;
+            } else {
+                if (enemyBoard.get(i)) {
+                    movement.set(i);
+                    break;
+                } else {
+                    movement.set(i);
+                }
+            }
+        }
+
+        //Up
+        for (int i = index - 8; i > -1; i = i - 8) {
+            if (allyBoard.get(i)) {
+                break;
+            } else {
+                if (enemyBoard.get(i)) {
+                    movement.set(i);
+                    break;
+                } else {
+                    movement.set(i);
+                }
+            }
+        }
+
+        //Left
+        for (int i = index - 1; i > (index/8)*8 -1; i = i - 1) {
+            if (allyBoard.get(i)) {
+                break;
+            } else {
+                if (enemyBoard.get(i)) {
+                    movement.set(i);
+                    break;
+                } else {
+                    movement.set(i);
+                }
+            }
+        }
+    }
+
+    private boolean in (int i, int[] ugh){
+        for(int u : ugh){
+            if(i == u){
+                return true;
+            }
+        }
+        return false;
     }
 
 
