@@ -14,11 +14,13 @@ public class ChessGUI extends ChessGame {
     int fromSq, toSq;
     JButton[] pieceLocation;
     JPanel[] panelLocation;
+    ChessSimulator simulator;
 
 
     ChessGUI(JFrame root){
         super();
         this.chessRoot = root;
+        this.simulator = new ChessSimulator();
         in = new Scanner(System.in);
         fromSq = -1;
         toSq = -1;
@@ -93,7 +95,8 @@ public class ChessGUI extends ChessGame {
     private void gameLoop() {
         if (legalMove(fromSq, toSq)) {
             move(fromSq, toSq, pieceFinder(fromSq));
-            simulate2ply();
+            int[] moves = this.simulator.bestMove(super.copyThis());
+            move(moves[0], moves[1], pieceFinderBlack(moves[0]));
             System.out.println("Your Turn");
             fromSq = -1;
             toSq = -1;
