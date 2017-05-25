@@ -1,19 +1,16 @@
-import javax.swing.*;
-import java.awt.*;
 import java.util.BitSet;
 
 /**
  * Created by Tyrael on 5/4/2017.
  */
-public class ChessGame {
+ class ChessGame {
     BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
     BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
     BitSet blackBoard = new BitSet(64);
     BitSet whiteBoard = new BitSet(64);
     BitSet fullBoard = new BitSet(64);
     ChessMoveGenerator movGen = new ChessMoveGenerator();
-    BoardEvaluator eval = new BoardEvaluator();
-    JButton[] buttonLocation;
+    Evaluator eval = new BoardEvaluator();
 
     ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
@@ -42,9 +39,7 @@ public class ChessGame {
 
     }
 
-    ChessGame(JButton[] buttonLocation, BoardInitializer ini){
-
-        this.buttonLocation = buttonLocation;
+    ChessGame(BoardInitializer ini){
 
         //Values in Centipawns
         //Black "Suit" locations
@@ -70,11 +65,11 @@ public class ChessGame {
 
     }
 
-    ChessGame(JButton[] buttonLocation){
-        this(buttonLocation, new BoardInitializer());
+    ChessGame(){
+        this(new BoardInitializer());
     }
 
-    private void move(int indexFrom, int indexTo,BitSet boardPiece){
+    void move(int indexFrom, int indexTo,BitSet boardPiece){
         this.blackBishops.clear(indexFrom);
         this.blackPawns.clear(indexFrom);
         this.blackKing.clear(indexFrom);
@@ -107,15 +102,6 @@ public class ChessGame {
         updateFullBoards();
     }
 
-    private void moveAndUpdate(int indexFrom, int indexTo,BitSet boardPiece){
-        move(indexFrom, indexTo, boardPiece);
-        updateBoard();
-
-    }
-
-    public void moveAndUpdate(int iFrom, int iTo){
-        moveAndUpdate(iFrom, iTo, pieceFinder(iFrom));
-    }
 
     public int finalMove(){
 
@@ -337,78 +323,10 @@ public class ChessGame {
             }
         }
 
-        this.moveAndUpdate((int)move[0], (int)move[1],(BitBoard) move[2]);
+        this.move((int)move[0], (int)move[1],(BitBoard) move[2]);
         System.out.printf("From:%d To:%d\n", move[0], move[1]);
     }
 
-    public void updateBoard(){
-        clearBoard();
-        for(int i = blackPawns.nextSetBit(0); i>=0; i = blackPawns.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BP");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = blackRooks.nextSetBit(0); i>=0; i = blackRooks.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BR");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = blackBishops.nextSetBit(0); i>=0; i = blackBishops.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BB");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = blackQueens.nextSetBit(0); i>=0; i = blackQueens.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BQ");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = blackKing.nextSetBit(0); i>=0; i = blackKing.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BK");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = blackKnights.nextSetBit(0); i>=0; i = blackKnights.nextSetBit(++i)){
-            this.buttonLocation[i].setText("BN");
-            this.buttonLocation[i].setForeground(new Color(255,150,0));
-        }
-
-        for(int i = whitePawns.nextSetBit(0); i>=0; i = whitePawns.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WP");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-
-        for(int i = whiteRooks.nextSetBit(0); i>=0; i = whiteRooks.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WR");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-
-        for(int i = whiteBishops.nextSetBit(0); i>=0; i = whiteBishops.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WB");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-
-        for(int i = whiteKnights.nextSetBit(0); i>=0; i = whiteKnights.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WN");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-
-        for(int i = whiteQueens.nextSetBit(0); i>=0; i = whiteQueens.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WQ");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-
-        for(int i = whiteKing.nextSetBit(0); i>=0; i = whiteKing.nextSetBit(++i)){
-            this.buttonLocation[i].setText("WK");
-            this.buttonLocation[i].setForeground(new Color(0,150,255));
-        }
-    }
-
-    private void clearBoard(){
-        for(JButton b : this.buttonLocation){
-            b.setText("");
-        }
-    }
 
     public Boolean legalMove(int iFrom, int iTo){
         if(whiteBoard.get(iFrom)){
@@ -460,7 +378,7 @@ public class ChessGame {
         return false;
     }
 
-    private BitBoard pieceFinder(int index){
+    BitBoard pieceFinder(int index){
         if(whitePawns.get(index)){
             return whitePawns;
         }
@@ -519,43 +437,5 @@ public class ChessGame {
 
     }
 
-    public void highlightMovements(int iFrom){
-        if(whitePawns.get(iFrom)){
-            for(int i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }else{
 
-        if(whiteRooks.get(iFrom)){
-            for(int i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }else{
-
-        if(whiteBishops.get(iFrom)){
-            for(int i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }else{
-
-        if(whiteKnights.get(iFrom)){
-            for(int i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }else{
-
-        if(whiteQueens.get(iFrom)){
-            for(int i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }else{
-
-        if(whiteKing.get(iFrom)){
-            for(int i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.buttonLocation[i].setText("!!!");
-            }
-        }}}}}}
-
-
-    }
 }
