@@ -15,7 +15,6 @@ public class ChessGUI extends ChessGame {
     JButton[] pieceLocation;
     JPanel[] panelLocation;
 
-
     ChessGUI(JFrame root){
         super();
         this.chessRoot = root;
@@ -75,33 +74,22 @@ public class ChessGUI extends ChessGame {
     }
 
     private void whereAreYou(int here){
-        if(fromSq == -1){
-            fromSq = here;
-            this.highlightMovements(fromSq);
+        if(this.fromSq == -1){
+            this.fromSq = here;
+            this.highlightMovements(this.fromSq);
         }else{
-            toSq = here;
-            gameLoop = new Thread() {
-                public void run() {
-                    gameLoop();
-                }
-            };
-            gameLoop.setDaemon(true);
-            gameLoop.start();
-        }
-    }
-
-    private void gameLoop() {
-        if (legalMove(fromSq, toSq)) {
-            move(fromSq, toSq, pieceFinder(fromSq));
-            simulate2ply();
-            System.out.println("Your Turn");
-            fromSq = -1;
-            toSq = -1;
-        } else {
-            System.out.println("Wrong Move");
-            updateBoard();
-            fromSq = -1;
-            toSq = -1;
+            this.toSq = here;
+            //gameLoop = new Thread() {
+            //    public void run() {
+            //       ChessGUI.super.gameLoop(fromSq, toSq);
+            //   }
+            //};
+            //gameLoop.setDaemon(true);
+            //gameLoop.start();
+            super.gameLoop(this.fromSq, this.toSq);
+            this.fromSq = -1;
+            this.toSq = -1;
+            this.updateBoard();
         }
     }
 
