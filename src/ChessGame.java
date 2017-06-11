@@ -755,4 +755,14 @@ import java.util.BitSet;
                 (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
     }
+
+    public void gameLoop(int fromSq, int toSq) {
+        if (legalMove(fromSq, toSq)) {
+            move(fromSq, toSq, pieceFinder(fromSq));
+            simulate2ply();
+            System.out.println("Your Turn");
+        } else {
+            System.out.println("Wrong Move");
+        }
+    }
 }
