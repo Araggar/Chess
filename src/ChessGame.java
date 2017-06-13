@@ -586,7 +586,7 @@ import java.util.BitSet;
                 movement.set(index+7);
             }
 
-            if(index+16 < 64 && !allyBoard.get(index+16) && !enemyBoard.get(index+16) && this.in(index, new int[]{8,9,10,11,12,13,14,15})){
+            if(index+16 < 64 && !allyBoard.get(index+8) && !enemyBoard.get(index+8) && !allyBoard.get(index+16) && !enemyBoard.get(index+16) && this.in(index, new int[]{8,9,10,11,12,13,14,15})){
                 movement.set(index+16);
             }
         }
@@ -608,7 +608,7 @@ import java.util.BitSet;
             if(index-7 > -1 && index%8<(index-7)%8 && enemyBoard.get(index-7)){
                 movement.set(index-7);
             }
-            if(index-16 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8) && this.in(index, new int[]{48,49,50,51,52,53,54,55})){
+            if(index-16 > -1 && !allyBoard.get(index-8) && !enemyBoard.get(index-8) && !allyBoard.get(index-16) && !enemyBoard.get(index-16) && this.in(index, new int[]{48,49,50,51,52,53,54,55})){
                 movement.set(index-16);
             }
         }
@@ -759,7 +759,9 @@ import java.util.BitSet;
     public void gameLoop(int fromSq, int toSq) {
         if (legalMove(fromSq, toSq)) {
             move(fromSq, toSq, pieceFinder(fromSq));
+			long startTime = System.nanoTime();
             simulate2ply();
+			System.out.printf("\nElapsed Time: %.8f ns\n",(System.nanoTime() - startTime)*0.000000001);
             System.out.println("Your Turn");
         } else {
             System.out.println("Wrong Move");
