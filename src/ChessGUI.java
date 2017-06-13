@@ -42,10 +42,29 @@ public class ChessGUI extends ChessGame {
             b_bis = ImageIO.read(new FileInputStream(new File(".\\resources\\black_bishop.png")));
             b_kin = ImageIO.read(new FileInputStream(new File(".\\resources\\black_king.png")));
             b_queen = ImageIO.read(new FileInputStream(new File(".\\resources\\black_queen.png")));
+			b_queen = ImageIO.read(new FileInputStream(new File(".\\resources\\black_queen.png")));
+			b_queen = ImageIO.read(new FileInputStream(new File(".\\resources\\black_queen.png")));
         } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+			try {
+				w_pawn = ImageIO.read(new FileInputStream(new File("./resources/white_pawn.png")));
+			    w_rook = ImageIO.read(new FileInputStream(new File("./resources/white_rook.png")));
+			    w_kni = ImageIO.read(new FileInputStream(new File("./resources/white_knight.png")));
+			    w_bis = ImageIO.read(new FileInputStream(new File("./resources/white_bishop.png")));
+			    w_kin = ImageIO.read(new FileInputStream(new File("./resources/white_king.png")));
+			    w_queen = ImageIO.read(new FileInputStream(new File("./resources/white_queen.png")));
+			    b_pawn = ImageIO.read(new FileInputStream(new File("./resources/black_pawn.png")));
+			    b_rook = ImageIO.read(new FileInputStream(new File("./resources/black_rook.png")));
+			    b_kni = ImageIO.read(new FileInputStream(new File("./resources/black_knight.png")));
+			    b_bis = ImageIO.read(new FileInputStream(new File("./resources/black_bishop.png")));
+			    b_kin = ImageIO.read(new FileInputStream(new File("./resources/black_king.png")));
+			    b_queen = ImageIO.read(new FileInputStream(new File("./resources/black_queen.png")));
+				b_queen = ImageIO.read(new FileInputStream(new File("./resources/black_queen.png")));
+				b_queen = ImageIO.read(new FileInputStream(new File("./resources/black_queen.png")));
+			} catch (IOException e2) {
+		        e2.printStackTrace();
+		        System.exit(1);
+			}        
+		}
         ini();
 
     }
@@ -104,28 +123,10 @@ public class ChessGUI extends ChessGame {
             this.highlightMovements(fromSq);
         }else{
             toSq = here;
-            gameLoop = new Thread() {
-                public void run() {
-                    gameLoop();
-                }
-            };
-            gameLoop.setDaemon(true);
-            gameLoop.start();
-        }
-    }
-
-    private void gameLoop() {
-        if (legalMove(fromSq, toSq)) {
-            move(fromSq, toSq, pieceFinder(fromSq));
-            simulate2ply();
-            System.out.println("Your Turn");
-            fromSq = -1;
-            toSq = -1;
-        } else {
-            System.out.println("Wrong Move");
-            updateBoard();
-            fromSq = -1;
-            toSq = -1;
+            super.gameLoop(fromSq, toSq);
+			fromSq = -1;
+			toSq = -1;
+			this.updateBoard();
         }
     }
 
@@ -192,37 +193,37 @@ public class ChessGUI extends ChessGame {
 
     public void highlightMovements(int iFrom){
         if(whitePawns.get(iFrom)){
-            for(int i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+            for(int i = whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                 this.panelLocation[i].setOpaque(true);
             }
         }else{
 
             if(whiteRooks.get(iFrom)){
-                for(int i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                for(int i = rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                     this.panelLocation[i].setOpaque(true);
                 }
             }else{
 
                 if(whiteBishops.get(iFrom)){
-                    for(int i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                    for(int i = bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                         this.panelLocation[i].setOpaque(true);
                     }
                 }else{
 
                     if(whiteKnights.get(iFrom)){
-                        for(int i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                        for(int i = knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                             this.panelLocation[i].setOpaque(true);
                         }
                     }else{
 
                         if(whiteQueens.get(iFrom)){
-                            for(int i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                            for(int i = queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                                 this.panelLocation[i].setOpaque(true);
                             }
                         }else{
 
                             if(whiteKing.get(iFrom)){
-                                for(int i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = movGen.kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
+                                for(int i = kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
                                     this.panelLocation[i].setOpaque(true);
                                 }
                             }}}}}}
