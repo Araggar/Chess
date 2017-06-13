@@ -9,7 +9,6 @@ import java.util.BitSet;
     BitSet blackBoard = new BitSet(64);
     BitSet whiteBoard = new BitSet(64);
     BitSet fullBoard = new BitSet(64);
-    Evaluator eval = new BoardEvaluator();
 
     ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
@@ -42,19 +41,19 @@ import java.util.BitSet;
 
         //Values in Centipawns
         //Black "Suit" locations
-        this.blackPawns = ini.generateBitset("p", 100);
-        this.blackRooks = ini.generateBitset("r", 500);
-        this.blackKnights = ini.generateBitset("n", 300);
-        this.blackBishops = ini.generateBitset("b", 301);
-        this.blackQueens = ini.generateBitset("q", 900);
-        this.blackKing = ini.generateBitset("k", 600000);
+        this.blackPawns = ini.generateBitset("p", 100, enums.Piece.PAWN);
+        this.blackRooks = ini.generateBitset("r", 500, enums.Piece.ROOK);
+        this.blackKnights = ini.generateBitset("n", 300, enums.Piece.KNIGHT);
+        this.blackBishops = ini.generateBitset("b", 300, enums.Piece.BISHOP);
+        this.blackQueens = ini.generateBitset("q", 900, enums.Piece.QUEEN);
+        this.blackKing = ini.generateBitset("k", 600000, enums.Piece.KING);
         //White "Suit" locations
-        this.whitePawns = ini.generateBitset("P", -100);
-        this.whiteRooks = ini.generateBitset("R", -500);
-        this.whiteKnights = ini.generateBitset("N", -300);
-        this.whiteBishops = ini.generateBitset("B", -301);
-        this.whiteQueens = ini.generateBitset("Q", -900);
-        this.whiteKing = ini.generateBitset("K", -600000);
+        this.whitePawns = ini.generateBitset("P", -100, enums.Piece.PAWN);
+        this.whiteRooks = ini.generateBitset("R", -500, enums.Piece.ROOK);
+        this.whiteKnights = ini.generateBitset("N", -300, enums.Piece.KNIGHT);
+        this.whiteBishops = ini.generateBitset("B", -301, enums.Piece.BISHOP);
+        this.whiteQueens = ini.generateBitset("Q", -900, enums.Piece.QUEEN);
+        this.whiteKing = ini.generateBitset("K", -600000, enums.Piece.KING);
 
         whiteBoard.or(this.whitePawns); whiteBoard.or(this.whiteRooks); whiteBoard.or(this.whiteKnights);
         whiteBoard.or(this.whiteQueens); whiteBoard.or(this.whiteKing); whiteBoard.or(this.whiteBishops);
@@ -120,9 +119,7 @@ import java.util.BitSet;
             for (int j = movements.nextSetBit(0); j >= 0; j = movements.nextSetBit(j + 1)){
                 ChessGame ChessGameCopy = copyThis();
                 ChessGameCopy.move(i, j, ChessGameCopy.whiteQueens);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -135,9 +132,7 @@ import java.util.BitSet;
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
                 ChessGameCopy.move(i, j, ChessGameCopy.whitePawns);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -150,9 +145,7 @@ import java.util.BitSet;
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
                 ChessGameCopy.move(i, j, ChessGameCopy.whiteBishops);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -165,9 +158,7 @@ import java.util.BitSet;
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
                 ChessGameCopy.move(i, j, ChessGameCopy.whiteKnights);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -180,9 +171,7 @@ import java.util.BitSet;
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
                 ChessGameCopy.move(i, j, ChessGameCopy.whiteRooks);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -195,9 +184,7 @@ import java.util.BitSet;
                         (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone());
 
                 ChessGameCopy.move(i, j, ChessGameCopy.whiteKing);
-                int boardValue = eval.totalBoardValue(ChessGameCopy.whitePawns, ChessGameCopy.whiteRooks, ChessGameCopy.whiteKnights,
-                        ChessGameCopy.whiteBishops, ChessGameCopy.whiteQueens, ChessGameCopy.whiteKing, ChessGameCopy.blackPawns, ChessGameCopy.blackRooks,
-                        ChessGameCopy.blackKnights, ChessGameCopy.blackBishops, ChessGameCopy.blackQueens, ChessGameCopy.blackKing);
+                int boardValue = ChessGameCopy.totalBoardValue();
                 cutoff = Math.min(cutoff, boardValue);
             }
         }
@@ -416,19 +403,19 @@ import java.util.BitSet;
     private Boolean legalMovement(int iFrom, int iTo, BitBoard piece){
         BitSet movements;
         switch (piece.pieceValue()){
-            case -100 : movements = whitePawnMovement(iFrom, whiteBoard, blackBoard);
+            case PAWN: movements = whitePawnMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -300 : movements = knightMovement(iFrom, whiteBoard, blackBoard);
+            case KNIGHT: movements = knightMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -301 : movements = bishopMovement(iFrom, whiteBoard, blackBoard);
+            case BISHOP: movements = bishopMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -500 : movements = rookMovement(iFrom, whiteBoard, blackBoard);
+            case ROOK: movements = rookMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
-            case -900 : movements = queenMovement(iFrom, whiteBoard, blackBoard);
+            case QUEEN: movements = queenMovement(iFrom, whiteBoard, blackBoard);
                 return (movements.get(iTo));
 
             default : movements = kingMovement(iFrom, whiteBoard, blackBoard);
@@ -766,5 +753,192 @@ import java.util.BitSet;
         } else {
             System.out.println("Wrong Move");
         }
+    }
+
+    private int[] blackPawnPositionalValues = {
+            0,  0,  0,  0,  0,  0,  0,  0,
+            50, 50, 40, 40, 40, 40, 50, 50,
+            10, 10, 40, 45, 45, 40, 10, 10,
+            5,  5, 10, 50, 50, 10,  5,  5,
+            0,  0,  0, 20, 20,  0,  0,  0,
+            5, -5,-10,  0,  0,-10, -5,  5,
+            5, 10, 10,-20,-20, 10, 10,  5,
+            0,  0,  0,  0,  0,  0,  0,  0
+    };
+
+    private int[] blackKnightPositionalValues = {
+            -50, -45, -30, -30, -30, -30, -45, -50,
+            -40, -20, 0, 0, 0, 0, -20, -40,
+            -30, 0, 10, 15, 15, 10, 0, -30,
+            -30, 5, 15, 20, 20, 15, 5, -30,
+            -30, 0, 15, 20, 20, 15, 0, -30,
+            -30, 5, 10, 15, 15, 10, 5, -30,
+            -40, -20, 0, 5, 5, 0, -20, -40,
+            -50, -40, -30, -30, -30, -30, -40, -50,
+    };
+
+    private int[] blackBishopPositionalValues = {
+            -20, -10, -10, -10, -10, -10, -10, -20,
+            -10, 0, 0, 0, 0, 0, 0, -10,
+            -10, 0, 5, 10, 10, 5, 0, -10,
+            -10, 5, 5, 10, 10, 5, 5, -10,
+            -10, 0, 10, 10, 10, 10, 0, -10,
+            -10, 10, 10, 10, 10, 10, 10, -10,
+            -10, 5, 0, 0, 0, 0, 5, -10,
+            -20, -10, -10, -10, -10, -10, -10, -20,
+    };
+
+    private int[] blackRookPositionalValues = {
+            0, 0, 0, 0, 0, 0, 0, 0,
+            5, 10, 10, 10, 10, 10, 10, 5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            -5, 0, 0, 0, 0, 0, 0, -5,
+            0, 0, 0, 5, 5, 0, 0, 0
+    };
+
+    private int[] blackQueensPositionalValues = {
+            -20,-10,-10, -5, -5,-10,-10,-20,
+            -10,  0,  0,  0,  0,  0,  0,-10,
+            -10,  0,  5,  5,  5,  5,  0,-10,
+            -5,  0,  5,  5,  5,  5,  0, -5,
+            0,  0,  5,  5,  5,  5,  0, -5,
+            -10,  5,  5,  5,  5,  5,  0,-10,
+            -10,  0,  5,  0,  0,  0,  0,-10,
+            -20,-10,-10, -5, -5,-10,-10,-20
+    };
+
+    private int[] blackKingPositionalValues = {
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -30, -40, -40, -50, -50, -40, -40, -30,
+            -20, -30, -30, -40, -40, -30, -30, -20,
+            -10, -20, -20, -20, -20, -20, -20, -10,
+            20,  20,   0,   0,   0,   0,  20,  20,
+            20,  30,  10,   0,   0,  10,  30,  20
+    };
+
+    private int[] whitePawnPositionalValues = {
+            0,  0,  0,  0,  0,  0,  0,  0,
+            -5,-10,-10, 20, 20,-10,-10, -5,
+            -5,  5, 10,  0,  0, 10,  5, -5,
+            0,  0,  0,-20,-20,  0,  0,  0,
+            -5, -5,-10,-25,-25,-10, -5, -5,
+            -10,-10,-20,-30,-30,-20,-10,-10,
+            -50,-50,-50,-50,-50,-50,-50,-50,
+            0,  0,  0,  0,  0,  0,  0,  0
+    };
+
+    private int[] whiteKnightPositionalValues = {
+            50, 40, 30, 30, 30, 30, 40, 50,
+            40, 20,  0, -5, -5,  0, 20, 40,
+            30, -5,-10,-15,-15,-10, -5, 30,
+            30,  0,-15,-20,-20,-15,  0, 30,
+            30, -5,-15,-20,-20,-15, -5, 30,
+            30,  0,-10,-15,-15,-10,  0, 30,
+            40, 20,  0,  0,  0,  0, 20, 40,
+            50, 40, 30, 30, 30, 30, 40, 50,
+    };
+
+    private int[] whiteBishopPositionalValues = {
+            20, 10, 10, 10, 10, 10, 10, 20,
+            10, -5,  0,  0,  0,  0, -5, 10,
+            10,-10,-10,-10,-10,-10,-10, 10,
+            10,  0,-10,-10,-10,-10,  0, 10,
+            10, -5, -5,-10,-10, -5, -5, 10,
+            10,  0, -5,-10,-10, -5,  0, 10,
+            10,  0,  0,  0,  0,  0,  0, 10,
+            20, 10, 10, 10, 10, 10, 10, 20
+    };
+
+    private int[] whiteRookPositionalValues = {
+            0,  0,  0, -5, -5,  0,  0,  0,
+            5,  0,  0,  0,  0,  0,  0,  5,
+            5,  0,  0,  0,  0,  0,  0,  5,
+            5,  0,  0,  0,  0,  0,  0,  5,
+            5,  0,  0,  0,  0,  0,  0,  5,
+            5,  0,  0,  0,  0,  0,  0,  5,
+            -5,-10,-10,-10,-10,-10,-10, -5,
+            0,  0,  0,  0,  0,  0,  0,  0
+    };
+
+    private int[] whiteQueensPositionalValues = {
+            20, 10, 10,  5,  5, 10, 10, 20,
+            10,  0,  0,  0,  0, -5,  0, 10,
+            10,  0, -5, -5, -5, -5, -5, 10,
+            5,  0, -5, -5, -5, -5,  0,  0,
+            5,  0, -5, -5, -5, -5,  0,  5,
+            10,  0, -5, -5, -5, -5,  0, 10,
+            10,  0,  0,  0,  0,  0,  0, 10,
+            20, 10, 10,  5,  5, 10, 10, 20
+    };
+
+    private int[] whiteKingPositionalValues = {
+            -20,-30,-10,  0,  0,-10,-30,-20,
+            -20,-20,  0,  0,  0,  0,-20,-20,
+            10, 20, 20, 20, 20, 20, 20, 10,
+            20, 30, 30, 40, 40, 30, 30, 20,
+            30, 40, 40, 50, 50, 40, 40, 30,
+            30, 40, 40, 50, 50, 40, 40, 30,
+            30, 40, 40, 50, 50, 40, 40, 30,
+            30, 40, 40, 50, 50, 40, 40, 30
+    };
+
+
+    private int blackBoardEvaluation(){
+        int totalValue = blackPawns.boardValue() + blackRooks.boardValue() + blackRooks.boardValue()
+                + blackBishops.boardValue() + blackQueens.boardValue() + blackKing.boardValue();
+        for(int index = blackPawns.nextSetBit(0); index > -1; index = blackPawns.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackPawnPositionalValues[index];
+        }
+        for(int index = blackRooks.nextSetBit(0); index > -1; index = blackRooks.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackRookPositionalValues[index];
+        }
+        for(int index = blackKnights.nextSetBit(0); index > -1; index = blackKnights.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackKnightPositionalValues[index];
+        }
+        for(int index = blackBishops.nextSetBit(0); index > -1; index = blackBishops.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackBishopPositionalValues[index];
+        }
+        for(int index = blackQueens.nextSetBit(0); index > -1; index = blackQueens.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackQueensPositionalValues[index];
+        }
+        for(int index = blackKing.nextSetBit(0); index > -1; index = blackKing.nextSetBit(index+1)){
+            totalValue = totalValue + this.blackKingPositionalValues[index];
+        }
+        return totalValue;
+    }
+
+    private int whiteBoardEvaluation(){
+        int totalValue = whitePawns.boardValue() + whiteRooks.boardValue() + whiteKnights.boardValue()
+                + whiteBishops.boardValue() + whiteQueens.boardValue() + whiteKing.boardValue();
+        for(int index = whitePawns.nextSetBit(0); index > -1; index = whitePawns.nextSetBit(index+1)){
+            totalValue = totalValue + this.whitePawnPositionalValues[index];
+        }
+        for(int index = whiteRooks.nextSetBit(0); index > -1; index = whiteRooks.nextSetBit(index+1)){
+            totalValue = totalValue + this.whiteRookPositionalValues[index];
+        }
+        for(int index = whiteKnights.nextSetBit(0); index > -1; index = whiteKnights.nextSetBit(index+1)){
+            totalValue = totalValue + this.whiteKnightPositionalValues[index];
+        }
+        for(int index = whiteBishops.nextSetBit(0); index > -1; index = whiteBishops.nextSetBit(index+1)){
+            totalValue = totalValue + this.whiteBishopPositionalValues[index];
+        }
+        for(int index = whiteQueens.nextSetBit(0); index > -1; index = whiteQueens.nextSetBit(index+1)){
+            totalValue = totalValue + this.whiteQueensPositionalValues[index];
+        }
+        for(int index = whiteKing.nextSetBit(0); index > -1; index = whiteKing.nextSetBit(index+1)){
+            totalValue = totalValue + this.whiteKingPositionalValues[index];
+        }
+        return totalValue;
+    }
+
+    public int totalBoardValue(){
+
+        return blackBoardEvaluation()
+                + whiteBoardEvaluation();
     }
 }

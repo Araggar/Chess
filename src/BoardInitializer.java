@@ -26,8 +26,8 @@ public class BoardInitializer {
     }
 
 
-    public BitBoard generateBitset(String Piece, int value){
-        BitBoard pieceBitboard = new BitBoard(64, value);
+    public BitBoard generateBitset(String Piece, int value, enums.Piece type){
+        BitBoard pieceBitboard = new BitBoard(64, value, type);
         for (int i = 0; i < this.squares; ++i) {
             if (this.initialBoard[i].equals(Piece)) {
                 pieceBitboard.set(i);
