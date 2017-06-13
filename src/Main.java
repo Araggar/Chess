@@ -12,11 +12,12 @@ class Main {
        //TestCases.caseGenerator();
        //TestCases.caseMovement();
        //TestCases.caseGame();
-       System.out.printf("\nElapsed Time: %.8f ns\n",(System.nanoTime() - startTime)*0.000000001);
 
        JFrame root = new JFrame();
        root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		ChessGUI chessRoot = new ChessGUI(root);
+       System.out.printf("\nElapsed Time1: %.8f ns\n",(System.nanoTime() - startTime)*0.000000001);
+/*
         JPanel menu = new JPanel();
 
        GridLayout menuLayout = new GridLayout(2,0);
@@ -44,7 +45,7 @@ class Main {
         menu.add(checkersGame, BorderLayout.SOUTH);
 
         root.pack();
-        root.setVisible(true);
+        root.setVisible(true);*/
 
     }
 
