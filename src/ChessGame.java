@@ -4,11 +4,11 @@ import java.util.BitSet;
  * Created by Tyrael on 5/4/2017.
  */
  class ChessGame {
-    BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
-    BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
-    BitSet blackBoard = new BitSet(64);
-    BitSet whiteBoard = new BitSet(64);
-    BitSet fullBoard = new BitSet(64);
+    private BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
+    private BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
+    private BitSet blackBoard = new BitSet(64);
+    private BitSet whiteBoard = new BitSet(64);
+    private BitSet fullBoard = new BitSet(64);
 
     ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
@@ -51,7 +51,7 @@ import java.util.BitSet;
         this.whitePawns = ini.generateBitset("P", -100, enums.Piece.PAWN);
         this.whiteRooks = ini.generateBitset("R", -500, enums.Piece.ROOK);
         this.whiteKnights = ini.generateBitset("N", -300, enums.Piece.KNIGHT);
-        this.whiteBishops = ini.generateBitset("B", -301, enums.Piece.BISHOP);
+        this.whiteBishops = ini.generateBitset("B", -300, enums.Piece.BISHOP);
         this.whiteQueens = ini.generateBitset("Q", -900, enums.Piece.QUEEN);
         this.whiteKing = ini.generateBitset("K", -600000, enums.Piece.KING);
 
@@ -192,7 +192,7 @@ import java.util.BitSet;
     }
 
 
-    public void simulate2ply(){
+    private void simulate2ply(){
         BitSet fullBlack = new BitSet(64);
         BitSet fullWhite = new BitSet(64);
         //Full representation of black pieces
@@ -302,7 +302,7 @@ import java.util.BitSet;
     }
 
 
-    public Boolean legalMove(int iFrom, int iTo){
+    private Boolean legalMove(int iFrom, int iTo){
         if(whiteBoard.get(iFrom)){
             BitBoard tempBoard = pieceFinder(iFrom);
             if(legalMovement(iFrom, iTo, tempBoard)){
@@ -352,7 +352,7 @@ import java.util.BitSet;
         return false;
     }
 
-    BitBoard pieceFinder(int index){
+    private BitBoard pieceFinder(int index){
         if(whitePawns.get(index)){
             return whitePawns;
         }
@@ -376,7 +376,7 @@ import java.util.BitSet;
         return whiteKing;
     }
 
-    BitBoard pieceFinderBlack(int index){
+    private BitBoard pieceFinderBlack(int index){
         if(blackPawns.get(index)){
             return blackPawns;
         }
@@ -435,7 +435,7 @@ import java.util.BitSet;
 
     }
 
-    public BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
+    private BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
         BitSet movement = new BitSet(64);
         int index = queenIndex;
         if(index > -1) {
@@ -445,7 +445,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = rookIndex;
         if(index > -1) {
@@ -454,7 +454,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = bishopIndex;
         if(index > -1) {
@@ -463,7 +463,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = knightIndex;
         if(index > -1) {
@@ -518,7 +518,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = kingIndex;
 
@@ -557,7 +557,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = pawnIndex;
         if(index >- 1) {
@@ -580,7 +580,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = pawnIndex;
         if(index >- 1) {
@@ -936,9 +936,118 @@ import java.util.BitSet;
         return totalValue;
     }
 
-    public int totalBoardValue(){
+    private int totalBoardValue(){
 
         return blackBoardEvaluation()
                 + whiteBoardEvaluation();
+    }
+
+    public int[] whitePawnsIndexes(){
+        int i = 0;
+        int n = whitePawns.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whitePawns.nextSetBit(0); index > -1; index = whitePawns.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] whiteRooksIndexes(){
+        int i = 0;
+        int n = whiteRooks.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteRooks.nextSetBit(0); index > -1; index = whiteRooks.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] whiteKnightIndexes(){
+        int i = 0;
+        int n = whiteKnights.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteKnights.nextSetBit(0); index > -1; index = whiteKnights.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] whiteBishopsIndexes(){
+        int i = 0;
+        int n = whiteBishops.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteBishops.nextSetBit(0); index > -1; index = whiteBishops.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] whiteQueensIndexes(){
+        int i = 0;
+        int n = whiteQueens.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteQueens.nextSetBit(0); index > -1; index = whiteQueens.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] whiteKingIndexes(){
+        int i = 0;
+        int n = whiteKing.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteKing.nextSetBit(0); index > -1; index = whiteKing.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackPawnsIndexes(){
+        int i = 0;
+        int n = blackPawns.cardinality();
+        int[] indexes = new int[n];
+        for(int index = blackPawns.nextSetBit(0); index > -1; index = blackPawns.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackRooksIndexes(){
+        int i = 0;
+        int n = whiteRooks.cardinality();
+        int[] indexes = new int[n];
+        for(int index = whiteRooks.nextSetBit(0); index > -1; index = whiteRooks.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackKnightsIndexes(){
+        int i = 0;
+        int n = blackKnights.cardinality();
+        int[] indexes = new int[n];
+        for(int index = blackKnights.nextSetBit(0); index > -1; index = whiteKnights.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackBishopsIndexes(){
+        int i = 0;
+        int n = blackBishops.cardinality();
+        int[] indexes = new int[n];
+        for(int index = blackBishops.nextSetBit(0); index > -1; index = blackBishops.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackQueensIndexes(){
+        int i = 0;
+        int n = blackQueens.cardinality();
+        int[] indexes = new int[n];
+        for(int index = blackQueens.nextSetBit(0); index > -1; index = blackQueens.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
+    }
+    public int[] blackKingIndexes(){
+        int i = 0;
+        int n = blackKing.cardinality();
+        int[] indexes = new int[n];
+        for(int index = blackKing.nextSetBit(0); index > -1; index = blackKing.nextSetBit(index+1)) {
+            indexes[i] = index;
+        }
+        return indexes;
     }
 }

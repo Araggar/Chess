@@ -15,7 +15,7 @@ class Main {
 
        JFrame root = new JFrame();
        root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ChessGUI chessRoot = new ChessGUI(root);
+       new ChessGUI(root);
        System.out.printf("\nElapsed Time1: %.8f ns\n",(System.nanoTime() - startTime)*0.000000001);
 /*
         JPanel menu = new JPanel();
