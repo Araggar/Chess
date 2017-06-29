@@ -1,13 +1,10 @@
 import java.util.BitSet;
 
-/**
- * Used to generate the pieces locations using an 'n' long String representation of a board
- */
 public class BoardInitializer {
-    String[] initialBoard;
-    int squares;
+    private String[] initialBoard;
+    private int squares;
 
-    BoardInitializer(){
+    public BoardInitializer(){
         this(new String[]{
                 "r", "n", "b", "q", "k", "b", "n", "r",
                 "p", "p", "p", "p", "p", "p", "p", "p",
@@ -20,14 +17,14 @@ public class BoardInitializer {
         }, 64);
     }
 
-    BoardInitializer(String[] initialBoard, int squares){
+    public BoardInitializer(String[] initialBoard, int squares){
         this.initialBoard = initialBoard;
         this.squares = squares;
     }
 
 
     public BitBoard generateBitset(String Piece, int value, enums.Piece type){
-        BitBoard pieceBitboard = new BitBoard(64, value, type);
+        BitBoard pieceBitboard = new BitBoard(this.squares, value, type);
         for (int i = 0; i < this.squares; ++i) {
             if (this.initialBoard[i].equals(Piece)) {
                 pieceBitboard.set(i);

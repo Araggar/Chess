@@ -13,12 +13,12 @@ import java.io.File;
  * Created by Tyrael on 5/13/2017.
  */
 public class ChessGUI extends ChessGame {
-    JFrame chessRoot;
-    Scanner in;
-    Thread gameLoop;
-    int fromSq, toSq;
-    JButton[] pieceLocation;
-    JPanel[] panelLocation;
+    private JFrame chessRoot;
+    private Scanner in;
+    private Thread gameLoop;
+    private int fromSq, toSq;
+    private JButton[] pieceLocation;
+    private JPanel[] panelLocation;
     private BufferedImage w_pawn, w_rook, w_bis, w_kni, w_kin, w_queen;
     private BufferedImage b_pawn, b_rook, b_bis, b_kni, b_kin, b_queen;
 
@@ -106,13 +106,38 @@ public class ChessGUI extends ChessGame {
             buttonBackground[i].add(panelLocation[i], BorderLayout.CENTER);
             panelLocation[i].add(pieceLocation[i]);
         }
-        this.updateBoard();
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Menu");
+        JMenuItem menuItem = new JMenuItem("Menu",KeyEvent.VK_T);
+        JMenuItem saveItem = new JMenuItem("Save",KeyEvent.VK_T);
+        JMenuItem loadItem = new JMenuItem("Load",KeyEvent.VK_T);
+        saveItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveState();
+            }
+        });
+        loadItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadState();
+                updateBoard();
+            }
+        });
+        menuBar.add(menu);
+        menu.add(saveItem);
+        menu.add(loadItem);
+
+        this.chessRoot.setJMenuBar(menuBar);
         this.chessRoot.add(board);
         this.chessRoot.pack();
+        this.chessRoot.revalidate();
         this.chessRoot.setVisible(true);
+        this.updateBoard();
     }
 
-    void move(int indexFrom, int indexTo,BitSet boardPiece){
+    public void move(int indexFrom, int indexTo,BitSet boardPiece){
         super.move( indexFrom, indexTo, boardPiece);
         updateBoard();
     }
@@ -123,61 +148,61 @@ public class ChessGUI extends ChessGame {
             this.highlightMovements(fromSq);
         }else{
             toSq = here;
-            super.gameLoop(fromSq, toSq);
+            gameLoop(fromSq, toSq);
 			fromSq = -1;
 			toSq = -1;
 			this.updateBoard();
         }
     }
 
-    public void updateBoard(){
+    private void updateBoard(){
         clearBoard();
-        for(int i = blackPawns.nextSetBit(0); i>=0; i = blackPawns.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_pawn));
+        for(int local : blackPawnIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_pawn));
         }
 
-        for(int i = blackRooks.nextSetBit(0); i>=0; i = blackRooks.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_rook));
+        for(int local : blackRookIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_rook));
         }
 
-        for(int i = blackBishops.nextSetBit(0); i>=0; i = blackBishops.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_bis));
+        for(int local : blackBishopIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_bis));
         }
 
-        for(int i = blackQueens.nextSetBit(0); i>=0; i = blackQueens.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_queen));
+        for(int local : blackQueenIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_queen));
         }
 
-        for(int i = blackKing.nextSetBit(0); i>=0; i = blackKing.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_kin));
+        for(int local : blackKingIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_kin));
         }
 
-        for(int i = blackKnights.nextSetBit(0); i>=0; i = blackKnights.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(b_kni));
+        for(int local : blackKnightIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(b_kni));
         }
 
-        for(int i = whitePawns.nextSetBit(0); i>=0; i = whitePawns.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_pawn));
+        for(int local : whitePawnIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_pawn));
         }
 
-        for(int i = whiteRooks.nextSetBit(0); i>=0; i = whiteRooks.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_rook));
+        for(int local : whiteRookIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_rook));
         }
 
-        for(int i = whiteBishops.nextSetBit(0); i>=0; i = whiteBishops.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_bis));
+        for(int local : whiteBishopIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_bis));
         }
 
-        for(int i = whiteKnights.nextSetBit(0); i>=0; i = whiteKnights.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_kni));
+        for(int local : whiteKnightIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_kni));
         }
 
-        for(int i = whiteQueens.nextSetBit(0); i>=0; i = whiteQueens.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_queen));
+        for(int local : whiteQueenIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_queen));
         }
 
-        for(int i = whiteKing.nextSetBit(0); i>=0; i = whiteKing.nextSetBit(++i)){
-            this.pieceLocation[i].setIcon(new ImageIcon(w_kin));
+        for(int local : whiteKingIndexes()){
+            this.pieceLocation[local].setIcon(new ImageIcon(w_kin));
         }
         chessRoot.repaint();
     }
@@ -191,42 +216,11 @@ public class ChessGUI extends ChessGame {
         }
     }
 
-    public void highlightMovements(int iFrom){
-        if(whitePawns.get(iFrom)){
-            for(int i = whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = whitePawnMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                this.panelLocation[i].setOpaque(true);
-            }
-        }else{
-
-            if(whiteRooks.get(iFrom)){
-                for(int i = rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = rookMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                    this.panelLocation[i].setOpaque(true);
-                }
-            }else{
-
-                if(whiteBishops.get(iFrom)){
-                    for(int i = bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = bishopMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                        this.panelLocation[i].setOpaque(true);
-                    }
-                }else{
-
-                    if(whiteKnights.get(iFrom)){
-                        for(int i = knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = knightMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                            this.panelLocation[i].setOpaque(true);
-                        }
-                    }else{
-
-                        if(whiteQueens.get(iFrom)){
-                            for(int i = queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = queenMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                                this.panelLocation[i].setOpaque(true);
-                            }
-                        }else{
-
-                            if(whiteKing.get(iFrom)){
-                                for(int i = kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(0); i >= 0; i = kingMovement(iFrom, whiteBoard, blackBoard).nextSetBit(i+1)) {
-                                    this.panelLocation[i].setOpaque(true);
-                                }
-                            }}}}}}
+    private void highlightMovements(int iFrom){
+        BitSet movements = movementIndexes(iFrom);
+        for(int i = movements.nextSetBit(0); i >= 0; i = movements.nextSetBit(i+1)) {
+            this.panelLocation[i].setOpaque(true);
+        }
     chessRoot.repaint();
     }
 

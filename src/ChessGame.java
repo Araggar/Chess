@@ -1,14 +1,18 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.BitSet;
 
 /**
  * Created by Tyrael on 5/4/2017.
  */
  class ChessGame {
-    BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
-    BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
-    BitSet blackBoard = new BitSet(64);
-    BitSet whiteBoard = new BitSet(64);
-    BitSet fullBoard = new BitSet(64);
+    private BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
+    private BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
+    private BitSet blackBoard = new BitSet(64);
+    private BitSet whiteBoard = new BitSet(64);
+    private BitSet fullBoard = new BitSet(64);
 
     ChessGame(BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
          BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
@@ -67,7 +71,7 @@ import java.util.BitSet;
         this(new BoardInitializer());
     }
 
-    void move(int indexFrom, int indexTo,BitSet boardPiece){
+    public void move(int indexFrom, int indexTo,BitSet boardPiece){
         this.blackBishops.clear(indexFrom);
         this.blackPawns.clear(indexFrom);
         this.blackKing.clear(indexFrom);
@@ -101,7 +105,7 @@ import java.util.BitSet;
     }
 
 
-    public int finalMove(){
+    private int finalMove(){
 
         BitSet fullBlack = new BitSet(64);
         BitSet fullWhite = new BitSet(64);
@@ -192,7 +196,7 @@ import java.util.BitSet;
     }
 
 
-    public void simulate2ply(){
+    private void simulate2ply(){
         BitSet fullBlack = new BitSet(64);
         BitSet fullWhite = new BitSet(64);
         //Full representation of black pieces
@@ -302,7 +306,7 @@ import java.util.BitSet;
     }
 
 
-    public Boolean legalMove(int iFrom, int iTo){
+    private Boolean legalMove(int iFrom, int iTo){
         if(whiteBoard.get(iFrom)){
             BitBoard tempBoard = pieceFinder(iFrom);
             if(legalMovement(iFrom, iTo, tempBoard)){
@@ -352,7 +356,7 @@ import java.util.BitSet;
         return false;
     }
 
-    BitBoard pieceFinder(int index){
+    private BitBoard pieceFinder(int index){
         if(whitePawns.get(index)){
             return whitePawns;
         }
@@ -373,10 +377,13 @@ import java.util.BitSet;
             return whiteQueens;
         }
 
-        return whiteKing;
+        if(whiteKing.get(index)){
+            return whiteKing;
+        }
+        return new BitBoard(0,0, enums.Piece.DEFAULT);
     }
 
-    BitBoard pieceFinderBlack(int index){
+    private BitBoard pieceFinderBlack(int index){
         if(blackPawns.get(index)){
             return blackPawns;
         }
@@ -435,7 +442,7 @@ import java.util.BitSet;
 
     }
 
-    public BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
+    private BitSet queenMovement(int queenIndex, BitSet allyBoard, BitSet enemyBoard) {
         BitSet movement = new BitSet(64);
         int index = queenIndex;
         if(index > -1) {
@@ -445,7 +452,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet rookMovement(int rookIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = rookIndex;
         if(index > -1) {
@@ -454,7 +461,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet bishopMovement(int bishopIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = bishopIndex;
         if(index > -1) {
@@ -463,7 +470,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet knightMovement(int knightIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = knightIndex;
         if(index > -1) {
@@ -518,7 +525,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet kingMovement(int kingIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = kingIndex;
 
@@ -557,7 +564,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet blackPawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = pawnIndex;
         if(index >- 1) {
@@ -580,7 +587,7 @@ import java.util.BitSet;
         return movement;
     }
 
-    public BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
+    private BitSet whitePawnMovement(int pawnIndex, BitSet allyBoard, BitSet enemyBoard){
         BitSet movement = new BitSet(64);
         int index = pawnIndex;
         if(index >- 1) {
@@ -936,9 +943,157 @@ import java.util.BitSet;
         return totalValue;
     }
 
-    public int totalBoardValue(){
+    private int totalBoardValue(){
 
         return blackBoardEvaluation()
                 + whiteBoardEvaluation();
+    }
+
+    public void saveState(){
+        try {
+            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream("./save/state.chess"));
+            writer.writeObject(new BitBoard[] {
+                    blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing,
+                    whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing
+            });
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public void loadState(){
+        try {
+            ObjectInputStream reader = new ObjectInputStream(new FileInputStream("./save/state.chess"));
+            BitBoard[] boards = (BitBoard[]) reader.readObject();
+            blackPawns = boards[0];
+            blackRooks = boards[1];
+            blackKnights = boards[2];
+            blackBishops = boards[3];
+            blackQueens = boards[4];
+            blackKing = boards[5];
+
+            whitePawns = boards[6];
+            whiteRooks = boards[7];
+            whiteKnights = boards[8];
+            whiteBishops = boards[9];
+            whiteQueens = boards[10];
+            whiteKing = boards[11];
+        }
+        catch(java.io.IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch(java.lang.ClassNotFoundException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+        catch(java.lang.IndexOutOfBoundsException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private int[] piecesIndexes(BitSet board){
+        int arraySize = board.cardinality();
+        int i = 0;
+        int[] indexes = new int[arraySize];
+        for(int index = board.nextSetBit(0); index >= 0; index = board.nextSetBit(index+1)){
+            indexes[i] = index;
+            ++i;
+        }
+        return indexes;
+    }
+
+    public int[] blackPawnIndexes(){
+        return piecesIndexes(blackPawns);
+    }
+
+    public int[] blackRookIndexes(){
+        return piecesIndexes(blackRooks);
+    }
+
+    public int[] blackKnightIndexes(){
+        return piecesIndexes(blackKnights);
+    }
+
+    public int[] blackBishopIndexes(){
+        return piecesIndexes(blackBishops);
+    }
+
+    public int[] blackQueenIndexes(){
+        return piecesIndexes(blackQueens);
+    }
+
+    public int[] blackKingIndexes(){
+        return piecesIndexes(blackKing);
+    }
+
+    public int[] whitePawnIndexes(){
+        return piecesIndexes(whitePawns);
+    }
+
+    public int[] whiteRookIndexes(){
+        return piecesIndexes(whiteRooks);
+    }
+
+    public int[] whiteKnightIndexes(){
+        return piecesIndexes(whiteKnights);
+    }
+
+    public int[] whiteBishopIndexes(){
+        return piecesIndexes(whiteBishops);
+    }
+
+    public int[] whiteQueenIndexes(){
+        return piecesIndexes(whiteQueens);
+    }
+
+    public int[] whiteKingIndexes(){
+        return piecesIndexes(whiteKing);
+    }
+
+    public BitSet movementIndexes(int location){
+        BitBoard board = pieceFinder(location);
+        switch (board.pieceValue()){
+            case PAWN:
+                if(blackBoard.get(location)){
+                    return blackPawnMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return whitePawnMovement(location, whiteBoard, blackBoard);
+                }
+            case ROOK:
+                if(blackBoard.get(location)){
+                    return rookMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return rookMovement(location, whiteBoard, blackBoard);
+                }
+            case KNIGHT:
+                if(blackBoard.get(location)){
+                    return knightMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return knightMovement(location, whiteBoard, blackBoard);
+                }
+            case BISHOP:
+                if(blackBoard.get(location)){
+                    return bishopMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return bishopMovement(location, whiteBoard, blackBoard);
+                }
+            case QUEEN:
+                if(blackBoard.get(location)){
+                    return queenMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return queenMovement(location, whiteBoard, blackBoard);
+                }
+            case KING:
+                if(blackBoard.get(location)){
+                    return kingMovement(location, blackBoard, whiteBoard);
+                }else{
+                    return kingMovement(location, whiteBoard, blackBoard);
+                }
+            default:
+                return new BitSet(0);
+        }
     }
 }
