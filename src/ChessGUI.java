@@ -1,3 +1,5 @@
+import javafx.scene.layout.GridPane;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -137,7 +139,7 @@ public class ChessGUI extends ChessGame {
         this.updateBoard();
     }
 
-    public void move(int indexFrom, int indexTo,BitSet boardPiece){
+    public void move(int indexFrom, int indexTo,BitBoard boardPiece){
         super.move( indexFrom, indexTo, boardPiece);
         updateBoard();
     }
@@ -148,10 +150,23 @@ public class ChessGUI extends ChessGame {
             this.highlightMovements(fromSq);
         }else{
             toSq = here;
-            gameLoop(fromSq, toSq);
-			fromSq = -1;
-			toSq = -1;
-			this.updateBoard();
+            switch(gameLoop(fromSq, toSq)){
+                case 1:
+                    this.updateBoard();
+                    System.out.println("CHECKMATE - BLACK WINS");
+                    end("CHECKMATE - BLACK WINS");
+                    break;
+                case 2:
+                    this.updateBoard();
+                    System.out.println("CHECKMATE - WHITE WINS");
+                    end("CHECKMATE - WHITE WINS");
+                    break;
+                default:
+                    fromSq = -1;
+                    toSq = -1;
+                    this.updateBoard();
+            }
+
         }
     }
 
@@ -222,6 +237,33 @@ public class ChessGUI extends ChessGame {
             this.panelLocation[i].setOpaque(true);
         }
     chessRoot.repaint();
+    }
+
+    private void end(String s){
+        JFrame end = new JFrame();
+        end.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel endPanel = new JPanel();
+        endPanel.setLayout(new GridLayout(2,1));
+        JLabel endLabel = new JLabel(s);
+        JButton newGame = new JButton("New Game");
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                chessRoot.dispose();
+                JFrame root = new JFrame();
+                root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                ChessGUI chessRoot = new ChessGUI(root);
+                end.dispose();
+            }
+        });
+
+        endPanel.add(endLabel);
+        endPanel.add(newGame);
+        end.add(endPanel);
+        end.pack();
+        end.setVisible(true);
+
+
     }
 
 
