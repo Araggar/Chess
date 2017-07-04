@@ -1,13 +1,14 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.BitSet;
+import java.util.Scanner;
 
 /**
  * Created by Tyrael on 5/4/2017.
  */
- class ChessGame {
+ class ChessGame implements BoardGame {
     private BitBoard blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing;
     private BitBoard whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing;
     private BitSet enPassant = new BitSet(64);
@@ -16,6 +17,9 @@ import java.util.BitSet;
     private BitSet whiteBoard = new BitSet(64);
     private BitSet fullBoard = new BitSet(64);
     boolean whiteCastleRight, blackCastleLeft, blackCastleRight, whiteCastleLeft;
+    private Scanner scannerIn;
+    private String saveAs, loadFrom;
+    private ObjectOutputStream writer;
 
     ChessGame(
             BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
@@ -952,7 +956,7 @@ import java.util.BitSet;
         return false;
     }
 
-    public ChessGame copyThis(){
+    private ChessGame copyThis(){
         return new ChessGame((BitBoard)blackPawns.clone(),  (BitBoard)blackRooks.clone(),  (BitBoard)blackKnights.clone(),
                 (BitBoard)blackBishops.clone(), (BitBoard)blackQueens.clone(), (BitBoard)blackKing.clone(),  (BitBoard)whitePawns.clone(),  (BitBoard)whiteRooks.clone(),
                 (BitBoard)whiteKnights.clone(),(BitBoard)whiteBishops.clone(), (BitBoard)whiteQueens.clone(),  (BitBoard)whiteKing.clone(),
@@ -1167,7 +1171,17 @@ import java.util.BitSet;
 
     public void saveState(){
         try {
-            ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream("./save/state.chess"));
+            scannerIn = new Scanner(System.in);
+            System.out.print("Save as >> ");
+            saveAs = scannerIn.nextLine();
+            Path path = Paths.get(".","save", saveAs);
+            Path folder = Paths.get(".","save");
+            if(Files.exists(folder)) {
+                writer = new ObjectOutputStream(new FileOutputStream(path.toString()));
+            }else{
+                new File("./save/").mkdir();
+                writer = new ObjectOutputStream(new FileOutputStream(path.toString()));
+            }
             writer.writeObject(new Object[] {
                     blackPawns, blackRooks, blackKnights, blackBishops, blackQueens, blackKing,
                     whitePawns, whiteRooks, whiteKnights, whiteBishops, whiteQueens, whiteKing,
@@ -1182,7 +1196,11 @@ import java.util.BitSet;
 
     public void loadState(){
         try {
-            ObjectInputStream reader = new ObjectInputStream(new FileInputStream("./save/state.chess"));
+            scannerIn = new Scanner(System.in);
+            System.out.print("File name >> ");
+            loadFrom = scannerIn.nextLine();
+            Path path = Paths.get(".","save", loadFrom);
+            ObjectInputStream reader = new ObjectInputStream(new FileInputStream(path.toString()));
             Object[] boards = (Object[])reader.readObject();
             blackPawns = (BitBoard) boards[0];
             blackRooks = (BitBoard)boards[1];
@@ -1209,7 +1227,7 @@ import java.util.BitSet;
         }
         catch(java.io.IOException e){
             e.printStackTrace();
-            System.exit(1);
+            //System.exit(1);
         }
         catch(java.lang.ClassNotFoundException e){
             e.printStackTrace();

@@ -1,6 +1,6 @@
 import java.util.BitSet;
 
-public class BitBoard extends BitSet {
+public class BitBoard extends BitSet implements BoardRepresentation {
     private int pieceValue;
     private enums.Piece pieceType;
 

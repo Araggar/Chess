@@ -114,6 +114,7 @@ public class ChessGUI extends ChessGame {
         JMenuItem menuItem = new JMenuItem("Menu",KeyEvent.VK_T);
         JMenuItem saveItem = new JMenuItem("Save",KeyEvent.VK_T);
         JMenuItem loadItem = new JMenuItem("Load",KeyEvent.VK_T);
+        JMenuItem newGameItem = new JMenuItem("New Game",KeyEvent.VK_T);
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,7 +128,18 @@ public class ChessGUI extends ChessGame {
                 updateBoard();
             }
         });
+        newGameItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame root = new JFrame();
+                root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                ChessGUI newRoot = new ChessGUI(root);
+                chessRoot.dispose();
+
+            }
+        });
         menuBar.add(menu);
+        menu.add(newGameItem);
         menu.add(saveItem);
         menu.add(loadItem);
 
@@ -265,8 +277,4 @@ public class ChessGUI extends ChessGame {
 
 
     }
-
-
-
-
 }

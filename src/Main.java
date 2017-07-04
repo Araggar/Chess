@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-class Main {
+class main {
     public static void main(String[] args) {
        long startTime = System.nanoTime();
 

@@ -1,6 +1,4 @@
-import java.util.BitSet;
-
-public class BoardInitializer {
+public class BoardInitializer implements BoardConstructor {
     private String[] initialBoard;
     private int squares;
 
