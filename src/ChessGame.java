@@ -21,7 +21,7 @@ import java.util.Scanner;
     private String saveAs, loadFrom;
     private ObjectOutputStream writer;
 
-    ChessGame(
+    private ChessGame(
             BitBoard blackPawns, BitBoard blackRooks, BitBoard blackKnights, BitBoard blackBishops,
             BitBoard blackQueen, BitBoard blackKing, BitBoard whitePawns, BitBoard whiteRooks, BitBoard whiteKnights,
             BitBoard whiteBishops, BitBoard whiteQueen, BitBoard whiteKing, BitSet enPassant, int enPassantType, boolean whiteCastleRight,
